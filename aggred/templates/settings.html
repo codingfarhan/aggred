@@ -1,0 +1,100 @@
+{% block content %} {% include "base2.html" %} {% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/change_picture.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+    <title>Settings|Aggred</title>
+</head>
+
+<!-- HEADING  -->
+<div class="heading">Settings</div>
+
+
+<!-- PROFILE PICTURE CHANGE  -->
+
+
+<div class="container">
+    <div class="avatar-upload">
+        <div class="avatar-edit">
+            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+            <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-preview">
+            <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- SETTINGS OPTIONS  -->
+<div class="options-container">
+    <div class="op-1" onclick="redirect_here('settings/change_email')">Change Email</div>
+    <div class="op-1" onclick="redirect_here('settings/change_password')">Change Password</div>
+    <div class="op-1" onclick="redirect_here('settings/change_name')">Change Name</div>
+    <div class="op-1" onclick="redirect_here('settings/change_title')">Change Profile Title</div>
+    <div class="op-1" id="delete-option" onclick="redirect_here('settings/delete_account')">Delete Account</div>
+</div>
+
+<!-- STYLING  -->
+
+<style>
+    .heading {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        font-size: 7vh;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        padding-top: 4%;
+    }
+    
+    .options-container {
+        display: flex;
+        width: 100vw;
+        height: auto;
+        flex-direction: column;
+    }
+    
+    .op-1 {
+        display: flex-inline;
+        width: 100%;
+        height: 10vh;
+        border-top: black;
+        justify-content: center;
+        text-align: center;
+        font-size: 150%;
+        align-content: center;
+        padding-top: 17px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    
+    .op-1:hover {
+        cursor: pointer;
+        background-color: darkcyan;
+        color: white;
+    }
+    
+    #delete-option:hover {
+        cursor: pointer;
+        background-color: darkcyan;
+        color: red;
+    }
+</style>
+
+<!-- JAVASCRIPT FOR REDIRECTING TO NEW PAGE ON CLICK -->
+
+<script>
+    function redirect_here(some_path) {
+        window.location.pathname = some_path;
+    }
+</script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src="{% static 'js/change_picture.js' %}"></script>
+
+{% endblock content %}

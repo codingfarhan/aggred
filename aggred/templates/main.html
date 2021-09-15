@@ -1,0 +1,36 @@
+{% block content %} {% include "base.html" %}
+
+<div class="container-fluid banner">
+    <footer class="text-center text-lg-start">
+        <div class="text-center text-white p-3 footer-text">
+            Don't have an Account?
+            <a class="text-white" href="/signup">Signup</a> here.
+        </div>
+        <div class="text-center text-white footer-text">
+            Already have an Account?
+            <a class="text-white" href="/login">Login</a> here.
+        </div>
+    </footer>
+</div>
+
+<style>
+    .banner {
+        height: 15vh;
+        width: 100vw;
+        background-color: darkcyan;
+        display: flex;
+        justify-content: center;
+        left: 0;
+        bottom: 0;
+        width: 100vw;
+        position: fixed;
+    }
+    
+    .footer-text {
+        text-align: center;
+        color: white;
+        font-size: 110%;
+    }
+</style>
+
+{% endblock content %}
