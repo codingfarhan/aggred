@@ -55,7 +55,7 @@ def forum(request):
 
     if request.method == 'GET':
 
-        return render(request, 'main.html')
+        return render(request, 'forum.html')
 
 
 
