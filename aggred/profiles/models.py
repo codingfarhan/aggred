@@ -55,17 +55,15 @@ class profile(AbstractUser):
 
     USERNAME_FIELD = 'email'
 
+    REQUIRED_FIELDS = []
+
     objects = CustomAccountManager()
 
 
 
 
 
-
-
-
-
-class save_post(models.Models):
+class save_post(models.Model):
 
     email = models.EmailField(max_length=30)
     post_id = models.TextField()
