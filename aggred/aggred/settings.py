@@ -39,8 +39,59 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # ... include the providers you want to enable:
+    'allauth.socialaccount.providers.google',
 ]
+
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_EMAIL_REQUIRED = False
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+
+        'APP': {
+            'client_id': '1068772275258-4gh7fogl9n7mn6tj4amkh1kmnqhpioud.apps.googleusercontent.com',
+            'secret': 'zLgpJ_tuQtSa8hL-Hv8QwWls',
+            'key': '',
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+
+AUTH_USER_MODEL = 'profiles.profile'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +105,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'aggred.urls'
+
 
 TEMPLATES = [
     {
@@ -77,13 +129,22 @@ WSGI_APPLICATION = 'aggred.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'df52bj7ft9f47t',
+        'USER': 'haazktmklxjdnm',
+        # 'PASSWORD': '123456',
+        'PASSWORD': 'c29361abc4891e0c04ae5e9b64ac0259cb0dd5285ba170333c7b9cefe2b86c4a',
+        # 'HOST': '65.0.172.102',
+        # 'HOST': 'localhost',
+        'HOST': 'ec2-3-226-134-153.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -8,17 +8,19 @@ class post(models.Model):
 
     post_id = models.TextField()
 
-    user = models.CharField(max_length=30)
-    user_image = models.TextField(default='default_url')
+    email = models.CharField(max_length=30)
+    user_image_url = models.TextField(default='default_url')
+    full_name = models.CharField(max_length=30)
 
     
-    title = models.TextField()
-    content = models.TextField()
+    post_title = models.TextField()
+    post_content = models.TextField()
 
     # for gauging popularity of post
     likes = models.IntegerField(default=0)
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    post_date = models.DateTimeField(auto_now_add=True)
+    
     answers = models.IntegerField(default=0)
 
 
@@ -29,14 +31,14 @@ class answer(models.Model):
 
     answer_id = models.TextField()
 
-    user = models.CharField(max_length=30)
+    full_name = models.CharField(max_length=30)
 
-    content = models.TextField()
+    answer_content = models.TextField()
 
     timestamp = models.DateTimeField(auto_now_add=True)
 
     # answers will be arranged according to number of 'useful's 
-    useful = models.IntegerField(default=0)
+    votes = models.IntegerField(default=0)
 
 
 
@@ -46,12 +48,14 @@ class reply(models.Model):
 
     answer_id = models.TextField()
 
-    user = models.CharField(max_length=30)
+    
+    email = models.CharField(max_length=30)
+    user_image_url = models.TextField(default='default_url')
+    full_name = models.CharField(max_length=30)
 
-    replying_to = models.CharField(max_length=30)
 
-    content = models.TextField()
+    reply_content = models.TextField()
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    reply_date = models.DateTimeField(auto_now_add=True)
 
 
