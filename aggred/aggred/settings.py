@@ -58,11 +58,14 @@ LOGOUT_REDIRECT_URL = '/'
 
 
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-# ACCOUNT_EMAIL_REQUIRED = False
-# ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 SOCIALACCOUNT_QUERY_EMAIL = True
 
@@ -176,8 +179,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'aggredofficial@gmail.com'
-EMAIL_HOST_PASSWORD = 'cemdzwvzlxofsbnt'
-# 'cemdzwvzlxofsbnt'
+EMAIL_HOST_PASSWORD = 'rkcrcvyxpveeyuqa'
+
+# windows: 'cemdzwvzlxofsbnt'
+# custom app: 'rkcrcvyxpveeyuqa'
 
 DEFAULT_FROM_EMAIL = 'aggredofficial@gmail.com'
 

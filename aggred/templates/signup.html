@@ -20,10 +20,10 @@
                                     <h3 class="text-center heading">SIGNUP</h3>
                                 </div>
                             </div>
-                            <div class="form-group form-primary"> <input type="text" class="form-control" name="full_name" value="" placeholder="Full Name" id="full_name"> </div>
+                            <div class="form-group form-primary"> <input type="text" class="form-control" name="first_name" value="" placeholder="Fist Name" id="first_name"> </div>
+                            <div class="form-group form-primary"> <input type="text" class="form-control" name="last_name" value="" placeholder="Last Name" id="last_name"> </div>
                             <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
                             <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
-                            <div class="form-group form-primary"> <input type="password" class="form-control" name="c_password" placeholder="Confirm password" value="" id="password_confirm"> </div>
                             <div class="row text-center">
                                 <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now">
                                     <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
@@ -36,7 +36,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" type="submit" value="google_signup" name="google" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
+                                    <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" onclick="redirect_here('accounts/google/login/');" value="google_signup" name="google" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
                                 </div>
                             </div> <br>
                             <p class="text-inverse text-center">Already have an account? <a data-abc="true" href="http://localhost:8000/accounts/google/login/">Login</a></p>

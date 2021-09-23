@@ -8,17 +8,24 @@
     <title>Aggred | Delete Account</title>
 </head>
 
-<div class="card text-center bg-light" style="margin-top: 25vh;">
+<form class="card text-center bg-light" style="margin-top: 25vh; display: block;" method="POST">
+    {% csrf_token %}
+
     <div class="card-body">
         <h5 class="card-title">Are you sure you want to delete your account?</h5>
         <p class="card-text">This action cannot be reversed.</p>
-        <button href="#" class="btn btn-danger" type="submit">Delete</button>
+
+        <button class="btn btn-danger" type="submit">Delete</button>
         <button href="#" class="btn btn-primary" onclick="redirect_to_settings();">Cancel</button>
     </div>
-</div>
+</form>
 
 
 <style>
+    form {
+        width: 100vw;
+    }
+    
     .search-container {
         display: none;
     }

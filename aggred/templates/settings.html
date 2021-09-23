@@ -1,4 +1,4 @@
-{% block content %} {% include "base2.html" %} {% load static %}
+{% load static %} {% block content %} {% include "base.html" %}
 
 <head>
     <meta charset="UTF-8">
@@ -34,11 +34,13 @@
 
 <!-- SETTINGS OPTIONS  -->
 <div class="options-container">
-    <div class="op-1" onclick="redirect_here('settings/change_email')">Change Email</div>
-    <div class="op-1" onclick="redirect_here('settings/change_password')">Change Password</div>
-    <div class="op-1" onclick="redirect_here('settings/change_name')">Change Name</div>
-    <div class="op-1" onclick="redirect_here('settings/change_title')">Change Profile Title</div>
-    <div class="op-1" id="delete-option" onclick="redirect_here('settings/delete_confirmation')">Delete Account</div>
+    {% if social_user == 'False' %}
+    <div class="op-1" onclick="redirect_here('settings_/change_email')">Change Email</div>
+    <div class="op-1" onclick="redirect_here('settings_/change_password')">Change Password</div>
+    {% endif %}
+    <div class="op-1" onclick="redirect_here('settings_/change_name')">Change Name</div>
+    <div class="op-1" onclick="redirect_here('settings_/change_title')">Change Profile Title</div>
+    <div class="op-1" id="delete-option" onclick="redirect_here('settings_/delete_confirmation')">Delete Account</div>
 </div>
 
 <!-- firebase sdk  -->
@@ -93,6 +95,9 @@
 <!-- JAVASCRIPT FOR REDIRECTING TO NEW PAGE ON CLICK -->
 
 <script>
+    search_section = document.getElementsByClassName('search-container')[0];
+    search_section.style.display = 'none';
+
     function redirect_here(some_path) {
         window.location.pathname = some_path;
     }
