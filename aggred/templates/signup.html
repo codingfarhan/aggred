@@ -1,14 +1,18 @@
 {% block content %} {% include "base.html" %}
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 
 <section class="login-block">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form class="md-float-material form-material" action="#" method="POST">
+                <form class="md-float-material form-material" action="#" method="POST" style="width: 95vw;">
+
+                    {% csrf_token %}
+
                     <div class="auth-box card">
                         <div class="card-block">
                             <div class="row">
@@ -19,8 +23,8 @@
                             <div class="form-group form-primary"> <input type="text" class="form-control" name="full_name" value="" placeholder="Full Name" id="full_name"> </div>
                             <div class="form-group form-primary"> <input type="text" class="form-control" name="email" value="" placeholder="Email" id="email"> </div>
                             <div class="form-group form-primary"> <input type="password" class="form-control" name="password" placeholder="Password" value="" id="password"> </div>
-                            <div class="form-group form-primary"> <input type="password" class="form-control" name="c_password" placeholder="Repeat password" value="" id="password_confirm"> </div>
-                            <div class="row">
+                            <div class="form-group form-primary"> <input type="password" class="form-control" name="c_password" placeholder="Confirm password" value="" id="password_confirm"> </div>
+                            <div class="row text-center">
                                 <div class="col-md-12"> <input type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" name="submit" value="Signup Now">
                                     <!-- <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"><i class="fa fa-lock"></i> Signup Now </button> -->
                                 </div>
@@ -31,11 +35,11 @@
                                 <div class="line-separator"></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-center">
                                     <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" type="submit" value="google_signup" name="google" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
                                 </div>
                             </div> <br>
-                            <p class="text-inverse text-center">Already have an account? <a href="<?= base_url() ?>auth/login" data-abc="true">Login</a></p>
+                            <p class="text-inverse text-center">Already have an account? <a data-abc="true" href="http://localhost:8000/accounts/google/login/">Login</a></p>
                         </div>
                     </div>
                 </form>
@@ -52,7 +56,7 @@
     
     .login-block {
         margin: 30px auto;
-        min-height: 93.6vh
+        min-height: 93.6vh;
     }
     
     .login-block .auth-box {
@@ -118,7 +122,7 @@
         text-transform: capitalize;
         font-size: 15px;
         padding: 10px 19px;
-        cursor: pointer
+        cursor: pointer;
     }
     
     .m-b-20 {
@@ -128,7 +132,7 @@
     .btn-md {
         padding: 10px 16px;
         font-size: 15px;
-        line-height: 23px
+        line-height: 23px;
     }
     
     .heading {
@@ -142,7 +146,7 @@
     .btn-google {
         color: #545454;
         background-color: #ffffff;
-        box-shadow: 0 1px 2px 1px #ddd
+        box-shadow: 0 1px 2px 1px #ddd;
     }
     
     .or-container {
@@ -164,6 +168,20 @@
         text-align: center
     }
 </style>
+
+
+<script>
+    /* hiding the search section */
+
+    search_part = document.getElementsByClassName('search-container')[0];
+
+    search_part.style.display = 'none';
+
+
+    function redirect_here(name) {
+        window.location.pathname = name;
+    };
+</script>
 
 
 {% endblock content %}

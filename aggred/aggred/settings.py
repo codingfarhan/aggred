@@ -62,6 +62,10 @@ LOGOUT_REDIRECT_URL = '/'
 # ACCOUNT_USERNAME_REQUIRED = False
 # ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+
+SOCIALACCOUNT_QUERY_EMAIL = True
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
 
@@ -163,6 +167,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# EMAIL SETTINGS 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'aggredofficial@gmail.com'
+EMAIL_HOST_PASSWORD = 'cemdzwvzlxofsbnt'
+# 'cemdzwvzlxofsbnt'
+
+DEFAULT_FROM_EMAIL = 'aggredofficial@gmail.com'
+
 
 
 # Internationalization

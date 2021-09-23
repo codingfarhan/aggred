@@ -1,5 +1,26 @@
 from django.shortcuts import render
 import datetime
+from .models import profile
+import uuid 
+from django.contrib.auth import authenticate 
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+
+
+def send_email_after_registration(email, auth_token):
+
+    #### sending email on the given id for verification ####
+    
+    subject = 'Your Account needs to be verified.'
+    message = f'Hey, follow this link to verify your account  http://localhost:8000/verify/{auth_token}'
+    email_from = settings.EMAIL_HOST_USER
+    print(email_from)
+    recipient_list = [email]
+
+    send_mail(subject, message, email_from, recipient_list)
+
 
 
 
@@ -8,7 +29,29 @@ def signin(request):
 
     if request.method == 'POST':
 
-        pass
+        email = request.POST.get('email', False)
+        password = request.POST.get('password', False)
+
+        normal_login = email and password
+
+
+        if normal_login:
+
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+
+                return render(request, 'index.html')
+
+            else:
+
+                return render(request, 'error_message.html', {'heading': 'Authentication Failed!', 'message': 'Please re-check your details and try again.'})
+
+
+        else:
+
+            return render(request, 'error_message.html', {'heading': 'An Error Occured.', 'message': 'Please try again in a moment.'})
+
 
     elif request.method == 'GET':
 
@@ -16,19 +59,22 @@ def signin(request):
 
 
 
+
+
 def signup(request):
+
+
 
     if request.method == 'POST':
 
-        email = request['POST'].get(email, False)
-        password = request['POST'].get(password, False)
-        c_password = request['POST'].get(c_password, False)
+        email = request.POST.get('email', False)
+        password = request.POST.get('password', False)
+        c_password = request.POST.get('c_password', False)
 
-        google_signup = request['POST'].get(google_signup, False)
+        # google_signup = request['POST'].get(google_signup, False)
 
 
-
-        signup_user = email or password or c_password
+        signup_user = email and password and c_password
 
 
         if password != c_password:
@@ -37,43 +83,23 @@ def signup(request):
 
         elif signup_user:
 
-            # create account using pyrebase API
-            
-            auth.create_user_with_email_and_password(email, password)
+            # we will signup using our custom user model
 
-            # store the user's full name in the Firestore Database
+            auth_token = str(uuid.uuid4())
 
-            start_date = datetime.datetime.now()
+            new_user = profile().__class__.objects.create_user(email=email, password=password, full_name='', auth_token = auth_token)
 
-            data = {
-                "crowns": "0",
-                "email": f"{email}",
-                "password": f"{password}",
-                "full_name": f"{full_name}",
-                "start_date": f"{firebase.database.ServerValue.TIMESTAMP}",
-                "title": ""
-            }
-
-            database.child("profiles").child("accounts").push(data)
+            new_user.save()
 
 
-            # signing in the user and verifiying his email:
+            # sending verification mail to the user:
 
-            user = auth.sign_in_with_email_and_password(email, password)
-
-            auth.send_email_verification(user['idToken'])
+            send_email_after_registration(email, auth_token)
 
 
-        elif not signup_user and not google_signup:
+        elif not signup_user:
 
             return render(request, 'error_message.html', {'heading': 'Error', 'message': 'Please go back and re-check your details.'})
-
-        
-        elif google_signup:
-
-            pass
-
-
 
         
 
@@ -83,7 +109,26 @@ def signup(request):
 
 
 
-def settings(request):
+
+def verify_email(request, auth_token):
+
+    if auth_token == request.user.auth_token:
+
+        current_user = profile.__class__.objects.filter(auth_toke=auth_token).first()
+
+        current_user.is_verified = True
+        current_user.save()
+
+        return render(request, 'message_screen.html', {'heading': 'Email Successfully Verified!', 'message': 'You will be redirected to the home page in a second.'})
+    
+    else:
+
+        return render(request, 'error_message.html', {'heading': 'An Error Occured.', 'message': 'Please re-check the URL and try again'})
+
+
+
+
+def settings_(request):
 
     if request.method == 'GET':
 
