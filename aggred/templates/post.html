@@ -1,112 +1,4 @@
-{% load static %} {% block content %} {% include "base.html" %}
-
-<link rel="stylesheet" href="{% static 'css/popup_form.css' %}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
-<div class="container-fluid banner" style="z-index: 10000;" id="footer">
-
-
-    <a style="float: right;" onclick="close_footer();" id="close"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-      </svg></a>
-
-    <footer class="text-center text-lg-start">
-        <div class="text-center text-white p-3 footer-text">
-            Don't have an Account?
-            <a class="text-white" href="/signup">Signup</a> here.
-        </div>
-        <div class="text-center text-white footer-text">
-            Already have an Account?
-            <a class="text-white" href="/login">Login</a> here.
-        </div>
-    </footer>
-</div>
-
-
-<!-- POPUP POST A QUESTION FORM  -->
-
-
-<div class="content" id="popup_form">
-
-    <div class="container">
-
-        <div class="row align-items-stretch justify-content-center no-gutters">
-
-            <div class="col-md-7" id="white-content">
-
-                <div class="form h-100 contact-wrap p-5">
-
-                    <a onclick="close_popup('popup_form');" id="close_btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/>
-                      </svg></a>
-                    <h3 class="text-center" id="form-heading"></h3>
-                    <form class="mb-5 text-center" method="post" id="contactForm" name="contactForm">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-12 form-group mb-3" id="form-title">
-                                <label for="" class="col-form-label">Title *</label>
-                                <input type="text" class="form-control" name="title" id="name" placeholder="Your question...">
-                            </div>
-                            <!-- <div class="col-md-6 form-group mb-3">
-                                <label for="" class="col-form-label">Email *</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
-                            </div> -->
-                        </div>
-
-                        <!-- <div class="row">
-                            <div class="col-md-12 form-group mb-3">
-                                <label for="budget" class="col-form-label">Subject</label>
-                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Your subject">
-                            </div>
-                        </div> -->
-
-                        <div class="row mb-5">
-                            <div class="col-md-12 form-group mb-3">
-                                <label for="message" class="col-form-label" id="explanation"></label>
-                                <textarea class="form-control" name="details" id="explanation" cols="30" rows="4" placeholder="Write about the problem in detail."></textarea>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-5 form-group text-center">
-                                <input type="submit" name="submit_btn" class="btn btn-block btn-primary rounded-0 py-2 px-4" id="form-btn">
-                                <span class="submitting"></span>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- <div id="form-message-warning mt-4"></div> -->
-                    <!-- <div id="form-message-success">
-                        Your message was sent, thank you!
-                    </div> -->
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-<!-- POPUP QUESTION FORM ENDS  -->
-
-
-
-<!-- FORUM POST  -->
-
-<!-- <div class="post-container">
-    <div class="user-detail-and-timestamp">
-
-    </div>
-    <div class="title-and-content">
-
-    </div>
-    <div class="likes-answers">
-
-    </div>
-</div> -->
-
-<!-- data:image/png;base64,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 -->
+{% block content %} {% include "base.html" %}
 
 <div class="post">
     <div class="card" style="width: 100vw;">
@@ -116,21 +8,21 @@
                     style="float: left;">
                 <a>
                     <a style="float: right;">
-                    timestamp.
+                    {{post_date}}
                 </a>
-                    <p style="padding-top: 0.3%; font-size: 110%;">&nbsp;&nbsp;&nbsp;&nbsp;User's name</p>
-                    <p style="font-size: 90%; line-height: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User's title</p>
+                    <p style="padding-top: 0.3%; font-size: 110%;">&nbsp;&nbsp;&nbsp;&nbsp;{{full_name}}</p>
+                    <p style="font-size: 90%; line-height: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user_title}}</p>
                 </a>
             </li>
         </ul>
         <div class="card-body">
-            <h5 class="card-title">How do you do this?</h5>
-            <p class="card-text">I have tried every method but it just won't work what do i do?</p>
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{content}}</p>
         </div>
     </div>
     <div class="card-header" id="likes-and-answers">
-        <a>31 Likes</a>&nbsp;&nbsp;&nbsp;
-        <a>3 Answers</a>
+        <a>{{likes}} Likes</a>&nbsp;&nbsp;&nbsp;
+        <a>{{answers}} Answers</a>
         <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('answer');">Answer</button>
         <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -239,53 +131,11 @@
     </div>
 </div>
 
-<!-- END OF POST  -->
 
 
 
-<!-- FIXED BUTTON FOR POSTING QUESTION -->
-
-{% if logged_in == 'True' %}
-
-<button id="post_question" class="rounded-circle" onclick="popup_form('ask');"><i class="bi bi-pencil-square" style="font-size: 200%"></i></button> {% endif %}
-<!-- END OF FIXED BUTTON  -->
 
 
-<!-- FIREBASE SDK  -->
-
-<script src="{% static 'js/firebase_sdk.js' %}" type="module"></script>
-<script src="{% static 'js/popup_form.js' %}"></script>
-<!-- END OF FIREBASE SDK  -->
-
-<style>
-    body {
-        overflow-x: hidden;
-        height: 100vh;
-        width: 100vw;
-    }
-    
-    .banner {
-        height: 15vh;
-        width: 100vw;
-        background-color: darkcyan;
-        display: flex;
-        justify-content: center;
-        left: 0;
-        bottom: 0;
-        width: 100vw;
-        position: fixed;
-    }
-    
-    .footer-text {
-        text-align: center;
-        color: white;
-        font-size: 110%;
-    }
-    
-    #close:hover {
-        cursor: pointer;
-    }
-</style>
 
 <style>
     #contactForm {
@@ -360,6 +210,8 @@
     }
 </style>
 
+
+
 <script>
     function close_footer() {
         footer = document.getElementById('footer');
@@ -411,7 +263,12 @@
         popup = document.getElementById(id_elem);
         popup.style.display = 'none';
     }
-</script>
 
+    /* removing search section */
+
+    search_section = document.getElementsByClassName('search-container')[0];
+
+    search_section.style.display = 'none';
+</script>
 
 {% endblock content %}

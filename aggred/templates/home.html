@@ -99,6 +99,9 @@
                             <h1 class="to-animate">Aggred</h1>
                             <h2 class="to-animate">An <b style="color: darkcyan;">Education Community</b> in the making.
                             </h2>
+                            {% if logged_in == 'False' %}
+                            <button class="btn btn-dark to-animate" id="action" type="button">Get Started</button> {% else %}
+                            <button class="btn btn-dark to-animate" id="action" type="button">Go to Forum</button> {% endif %}
                         </div>
                     </div>
                 </div>
@@ -541,5 +544,28 @@
     <script src="/aggred/static/js/firebase_sdk.js" type="module"></script>
 
 </body>
+
+
+<style>
+    #action {
+        background-color: darkcyan;
+        color: white;
+    }
+    
+    #action:hover {
+        color: white;
+    }
+</style>
+
+
+<script>
+    btn = document.getElementById('action');
+
+    btn.addEventListener('click', redirect_here);
+
+    function redirect_here() {
+        window.location.pathname = 'forum';
+    };
+</script>
 
 </html>

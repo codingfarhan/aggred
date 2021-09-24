@@ -6,11 +6,12 @@ from django.db import models
 
 class post(models.Model):
 
-    post_id = models.TextField()
+    post_id = models.TextField(unique=True)
 
     email = models.CharField(max_length=30)
     user_image_url = models.TextField(default='default_url')
     full_name = models.CharField(max_length=30)
+    user_title = models.TextField(default='')
 
     
     post_title = models.TextField()
@@ -27,13 +28,15 @@ class post(models.Model):
 
 class answer(models.Model):
 
-    post_id = models.TextField()
+    post_id = models.TextField(default='')
 
-    answer_id = models.TextField()
+    answer_id = models.TextField(unique=True)
 
     full_name = models.CharField(max_length=30)
 
-    answer_content = models.TextField()
+    user_title = models.TextField(default='')
+
+    answer_content = models.TextField(default='')
 
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -47,6 +50,8 @@ class reply(models.Model):
     post_id = models.TextField()
 
     answer_id = models.TextField()
+
+    reply_id = models.TextField(unique=True)
 
     
     email = models.CharField(max_length=30)

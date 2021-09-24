@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import datetime
 from .models import profile
 import uuid 
-from django.contrib.auth import authenticate, get_user_model, logout
+from django.contrib.auth import authenticate, get_user_model, logout, login
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
@@ -42,7 +42,9 @@ def signin(request):
 
             if user is not None:
 
-                return render(request, 'index.html')
+                login(request, user)
+
+                return render(request, 'home.html')
 
             else:
 
@@ -126,9 +128,11 @@ def signout(request):
 
 def verify_email(request, auth_token):
 
-    if auth_token == request.user.auth_token:
+    user = profile().__class__.objects.filter(auth_token=auth_token)
 
-        current_user = profile().__class__.objects.filter(auth_toke=auth_token).first()
+    if user.exists() and not user.first().is_verified:
+
+        current_user = profile().__class__.objects.filter(auth_token=auth_token).first()
 
         current_user.is_verified = True
         current_user.save()

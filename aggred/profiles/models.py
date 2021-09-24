@@ -47,6 +47,8 @@ class profile(AbstractUser):
 
     username = None
 
+    user_image_url = models.TextField(default='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')
+
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=250)
     title = models.TextField(max_length=100)
