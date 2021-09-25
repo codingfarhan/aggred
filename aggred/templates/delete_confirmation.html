@@ -12,8 +12,8 @@
     {% csrf_token %}
 
     <div class="card-body">
-        <h5 class="card-title">Are you sure you want to delete your account?</h5>
-        <p class="card-text">This action cannot be reversed.</p>
+        <h5 class="card-title">{{heading}}</h5>
+        <p class="card-text">{{message}}</p>
 
         <button class="btn btn-danger" type="submit">Delete</button>
         <button href="#" class="btn btn-primary" onclick="redirect_to_settings();">Cancel</button>

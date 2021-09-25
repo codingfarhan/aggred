@@ -65,6 +65,9 @@ class profile(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
 
+    liked_posts = models.TextField(default='')
+
+
     USERNAME_FIELD = 'email'
 
     REQUIRED_FIELDS = ['first_name', 'last_name']

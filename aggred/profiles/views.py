@@ -30,7 +30,7 @@ def signin(request):
 
     if request.method == 'POST':
 
-        email = request.POST.get('email', False)
+        email = request.POST.get('login', False)
         password = request.POST.get('password', False)
 
         normal_login = email and password
@@ -70,7 +70,7 @@ def signup(request):
 
     if request.method == 'POST':
 
-        email = request.POST.get('email', False)
+        email = request.POST.get('login', False)
         password = request.POST.get('password', False)
         first_name = request.POST.get('first_name', False)
         last_name = request.POST.get('last_name', False)
@@ -178,7 +178,7 @@ def delete_confirmation(request):
 
     elif request.method == 'GET':
 
-        return render(request, 'delete_confirmation.html')
+        return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this account?', 'message': 'This action cannot be reversed.'})
 
 
 

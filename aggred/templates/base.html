@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse ml-auto" id="navbarNavDarkDropdown" style="justify-content: flex-end">
                 <ul class="navbar-nav">
 
-                    <li style="padding-top: 2vh;">
+                    <li style="padding-top: 2vh;" onclick="redirect_here('leaderboards');">
                         <a href="" id="leaderboards" style="color: darkcyan; font-size: 120%; padding-bottom: 5%">Leaderboards</a>
 
                         <a><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-crown" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffec00" fill="none" stroke-linecap="round" stroke-linejoin="round" id="leaderboard-icon">
@@ -89,6 +89,9 @@
                 width: auto;
                 padding-bottom: 3vh;
             }
+            #leaderboard-icon:hover {
+                cursor: pointer;
+            }
         }
     </style>
 
@@ -97,7 +100,9 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
 
     <script>
-        /* dropdown functionality */
+        function redirect_here(name) {
+            window.location.pathname = name;
+        };
     </script>
 
 </body>

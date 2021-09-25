@@ -8,8 +8,8 @@ class post(models.Model):
 
     post_id = models.TextField(unique=True)
 
-    email = models.CharField(max_length=30)
-    user_image_url = models.TextField(default='default_url')
+    email = models.CharField(max_length=30, unique=False)
+    user_image_url = models.TextField(default='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')
     full_name = models.CharField(max_length=30)
     user_title = models.TextField(default='')
 
@@ -32,9 +32,15 @@ class answer(models.Model):
 
     answer_id = models.TextField(unique=True)
 
+    email = models.CharField(max_length=30, unique=True, default='')
+
     full_name = models.CharField(max_length=30)
 
     user_title = models.TextField(default='')
+
+    user_image_url = models.TextField(default='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')
+
+    answer_title = models.TextField(default='')
 
     answer_content = models.TextField(default='')
 
@@ -53,14 +59,18 @@ class reply(models.Model):
 
     reply_id = models.TextField(unique=True)
 
+    replying_to = models.CharField(max_length=30)
+
     
-    email = models.CharField(max_length=30)
-    user_image_url = models.TextField(default='default_url')
+    email = models.CharField(max_length=30, default='')
+    user_image_url = models.TextField(default='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')
     full_name = models.CharField(max_length=30)
 
 
     reply_content = models.TextField()
 
     reply_date = models.DateTimeField(auto_now_add=True)
+
+    likes = models.IntegerField(default=0)
 
 

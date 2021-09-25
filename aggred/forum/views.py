@@ -6,7 +6,17 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .models import post, answer, reply
 import uuid
+import json
+import datetime
+from django.http import Http404, HttpResponseRedirect
+from profiles.models import profile
 
+
+
+
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
 
 
 def get_feedback(name, email, message):
@@ -114,6 +124,10 @@ def forum(request):
 
             logged_in = 'True'
 
+        elif profile().__class__.objects.filter(email=request.user.email).exists():
+
+            logged_in = 'True'
+
         else:
 
             logged_in = 'False'
@@ -139,56 +153,89 @@ def post_id(request, post_id):
 
         post_data = post().__class__.objects.filter(post_id=post_id).first()
 
-        
-        full_name = post_data.full_name
-        image_url = post_data.user_image_url
-        likes = post_data.likes
-        title = post_data.post_title
-        content = post_data.post_content
-        post_date = post_data.post_date
-        answers = post_data.answers
+        if post_data is None:
 
-        user_title = post_data.user_title
-
-        post_date = post_data.post_date
-
-
-        # sending answer data (if any):
-
-        answers_data = answer.objects.filter(post_id=post_id).all()
-
-        if answers_data is not None:
-
-            print(answers_data)
-            answers_exist = 'True'
+            raise Http404("Post does not exist. Are you sure the URL is correct?")
 
         else:
 
-            answers_exist = 'False'
+            already_answered = str(answer.objects.filter(post_id=post_id, email=request.user.email).exists())
+
         
+            full_name = post_data.full_name
+            image_url = post_data.user_image_url
+            likes = post_data.likes
+            title = post_data.post_title
+            content = post_data.post_content
+            post_date = post_data.post_date
+            answers = post_data.answers
 
-        # sending replies data (if any):
+            post_id = post_data.post_id
 
-        replies_data = reply.objects.filter(post_id=post_id).all()
+            user_title = post_data.user_title
 
-        if replies_data is not None:
-
-            print(replies_data)
-            replies_exist = 'True'
-
-        else:
-
-            replies_exist = 'False'
+            post_date = post_data.post_date
 
 
-        return render(request, 'post.html', {'answers_exist': answers_exist, 'replies_exist': replies_exist,'full_name': full_name, 'post_date': post_date, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'user_title': user_title})
+
+
+            answers_list = []
+            replies_list = []
+
+
+            # sending answer data (if any):
+
+            answers_data = json.dumps(list(answer.objects.filter(post_id=post_id).values()), default=myconverter)
+
+            if answers_data != '':
+
+                qs = json.loads(answers_data)
+
+                print(qs)
+                answers_exist = 'True'
+
+                for item in qs:
+
+                    answers_list.append({'full_name': item['full_name'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'user_title': item['user_title'], 'answer_title': item['answer_title'], 'answer_content': item['answer_content'], 'time_stamp': item['timestamp'], 'votes': item['votes']})
+
+
+            else:
+
+                answers_exist = 'False'
+            
+
+
+            # sending replies data (if any):
+
+
+            replies_data = json.dumps(list(reply.objects.filter(post_id=post_id).values()), default=myconverter)
+
+
+            if replies_data != '':
+
+                qs = json.loads(replies_data)
+
+                print(qs)
+                replies_exist = 'True'
+
+                for item in qs:
+
+                    replies_list.append({'full_name': item['full_name'], 'replying_to': item['replying_to'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'reply_content': item['reply_content'], 'time_stamp': item['reply_date']})
+
+
+            else:
+
+                replies_exist = 'False'
+
+
+            return render(request, 'post.html', {'current_user': request.user.first_name + ' ' + request.user.last_name, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title})
 
 
     elif request.method == 'POST':
 
 
         title = request.POST.get('title', False)
-        explanation = request.POST.get('explanation', False)
+        explanation = request.POST.get('details', False)
         form_submit = request.POST.get('submit_btn', False)
 
         valid_ = title and explanation and form_submit
@@ -197,9 +244,14 @@ def post_id(request, post_id):
 
 
 
-        if not valid_:
+        # for debugging:
 
-            return render(request, 'error_message.html', {'heading': 'An Error Occured', 'message': 'Please try again later in the server.'})
+        print('for debugging: ', title, explanation, form_submit)
+
+
+        if not valid_ and len(form_submit.split(',')) != 3:
+
+            return render(request, 'error_message.html', {'heading': 'An Error Occured', 'message': 'Please try again later.'})
 
         else:
 
@@ -211,9 +263,101 @@ def post_id(request, post_id):
 
                 post_id = str(uuid.uuid4())
 
-                new_post = post(post_id=post_id, email=request.user.email, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation)
+                new_post = post(post_id=post_id, email=request.user.email, user_title=request.user.title, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation)
+                new_post.save()
 
-                return redirect(f'forum/post/{post_id}')
+                return HttpResponseRedirect(request.path_info)
+
+
+            elif form_submit == "answering_question":
+
+                # saving answer:
+
+
+                ans_id = str(uuid.uuid4())
+
+                new_ans = answer(post_id=post_id, answer_id=ans_id, full_name=full_name, email=request.user.email, user_title=request.user.title, user_image_url=request.user.user_image_url, answer_title=title, answer_content=explanation)
+                new_ans.save()
+
+                return HttpResponseRedirect(request.path_info)
+
+            
+            elif form_submit.split(',')[0] == "replying_to_answer" or form_submit.split(',')[0] == "replying_to_reply":
+
+                # saving reply:
+
+                reply_id = str(uuid.uuid4())
+
+                new_reply = reply(reply_id=reply_id, replying_to=form_submit.split(',')[-1], post_id=post_id, answer_id=form_submit.split(',')[1], email=request.user.email, user_image_url=request.user.user_image_url, full_name=request.user.first_name + ' ' + request.user.last_name, reply_content=explanation)
+                new_reply.save()
+
+                return HttpResponseRedirect(request.path_info)
+
+
+
+
+
+@login_required(login_url='signin')
+def delete_post(request, post_id):
+
+
+    if request.method == 'GET':
+
+        qs = answer.objects.filter(post_id=post_id)
+        delete_ = True
+
+        # can only delete post if there are 0 answers that have been given a lot of votes (we assume that number to be 20 here).
+
+        if qs.exists():
+
+            for item in qs.values():
+
+                if item['votes'] >= 25:
+
+                    delete_ = False
+
+                    return render(request, 'error_message.html', {'heading': 'Delete Unsuccessful', 'message': 'You cannot delete this question from the forum as a significant number of people have already interacted with it.'})
+
+
+        if delete_ == True:         
+        
+            return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this post?', 'message': 'This is an irreversable action.'})
+
+
+    elif request.method == 'POST':
+
+
+        # delete the post
+
+        del_post = post.objects.filter(post_id=post_id).first()
+        del_post.delete()
+
+        # delete all associated answers
+
+        del_answers = post.objects.filter(post_id=post_id).all()
+
+        for row in del_answers:
+            row.delete()
+
+        # delete all associated replies
+
+        del_replies = reply.objects.filter(post_id=post_id).all()
+
+        for row in del_replies:
+            row.delete()
+
+        return HttpResponseRedirect('forum')
+
+
+
+@login_required(login_url='signin')
+def edit_post(request):
+
+    pass
+
+
+
+
 
 
 
