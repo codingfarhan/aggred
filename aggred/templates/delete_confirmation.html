@@ -16,7 +16,7 @@
         <p class="card-text">{{message}}</p>
 
         <button class="btn btn-danger" type="submit">Delete</button>
-        <button href="#" class="btn btn-primary" onclick="redirect_to_settings();">Cancel</button>
+        <button href="#" class="btn btn-primary" onclick="redirect_here('{{redirect_path}}');">Cancel</button>
     </div>
 </form>
 
@@ -32,8 +32,8 @@
 </style>
 
 <script>
-    function redirect_to_settings() {
-        window.location.pathname = 'settings';
+    function redirect_here(name) {
+        window.location.pathname = name;
     }
 </script>
 

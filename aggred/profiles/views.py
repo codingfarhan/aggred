@@ -178,7 +178,7 @@ def delete_confirmation(request):
 
     elif request.method == 'GET':
 
-        return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this account?', 'message': 'This action cannot be reversed.'})
+        return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this account?', 'message': 'This action cannot be reversed.', 'redirect_path': 'settings'})
 
 
 

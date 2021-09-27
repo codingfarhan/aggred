@@ -1,0 +1,161 @@
+{% load static %} {% block content %} {% include "base.html" %} {% for post in context %}
+<div class="post">
+    <div class="card" style="width: 100vw;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAP1BMVEW6urr///+4uLj5+fnGxsa8vLz8/Pz39/e/v7/CwsLz8/O1tbXQ0NDV1dX09PTl5eXt7e3a2trLy8vg4ODS0tJ+jrBMAAAGl0lEQVR4nO2diXajOgxAjbHAbMEs//+tTzahTUIyZbGxyNOdnjNNmybcepMXVCEYhmEYhmEYhmEYhmEYhmEYhmEYhmEYhmEYhjkf+MejrwHg8b+vw3mBRXyp5NfXUllVlZSuDKX7PPYF+QFsdUQhAWoc2jJPE0ual+0wKhCobJ9w5fLE8hISdD2UaZY8k6XlUGv3/esa2iuX0LdTyT0rTo/StgcpLtsqsRYK3Rm0QR695gfuy6bT+LyLKkroyrtSlixq6c/Xyg6u1+3Y3kNCc0vWkTfoeLEeR4JQZllw78HnGSUuVpAguzTJ1gnaFpmknbxWERbta+f5VzEmbXGhQpSqvBfgymqa2Y9SXUVRyn5D6T3Syys4Ymsa852G+XiJwV/W6U5BjHHqCxRiVdu2t6WXmXE/V1exBf5CqtsuvVnyRru7wUBG722DM7mWlNsiiDZ5E4OuL0I7LlIWFLJL9rXBX8ck6SjXU5XOl7lfMElVbI2PgDAHqujsmCWGbD2tmoN6s2RDcciwcx9devCzhqV28y9qQHW0m5kFsbOpyPnhBVWwP1pbWEJFLkKFqQh9gYVITFBgIOKnFU6UGB7FVlqwd1L4nj62zgKoWq+GLb2+RvvrZyypji30Asjax2D/S1ZTGxCl30pKsJqC8WxYEhMUhd9KitWU2GRf1l6C7gfBhNiiFE59F3ughwTTpIvt9Iz3jga7GlplKHx3NAnOg0kBa7cK13Oj1ZkeXkRcktOKar7fsPAblVrSIrbUEyqAIa1FRe+GGbUyLAK0Q1qG39/TeF2kmSA2HsoAMQ2tqC1EXEpraV823g2JbbLh/NA3xOaHOMf3PAPOaA0WATpTcus0YvBsOMQWWuC7IdaxhV4A6XFvzZICtRXhr9+3AN/VtKa2Q2rvC/G8f0hsi1SCFD7Dmsa9Ii3wl575OKjgXiOjeXD/8JGvH0FqMekP+uanEAnGMzOjp1o6xhb5hBTGQ/ydZcTW8x8AUF7KUJGtpEJ4OTXU0ZrcP4FDmI3djp0vbSke2pvBWBID8GOnoFN8DbKFaE9q2bP6R7Bn9UkfZcfLqw+VYS0JHmh7Buw9M9l2S3dzV0runNAbJFTN3slw2lTk4u03oGK/p6Liz/SXEBR2vq/MjlpqFLV5/Sewu5d6+z6G0ZLmnOkteKHNtv22vKG2bPFvsC1uvpf7Km1wAmxjnO7H/0vSfv/WgG2C1ypDu5Ik9aqcA7dG358f+7I3AO6S8V/R/eV46wr3TCC3BLySSvTtr+RT5g+r1/aCbJi9FlmJoh5uy+aY3Ya6EF+Qa8glGZKg+qE1ZW4ztmR5adqhVyCnFEMXBzVcohO7wAsA2mLTfeFjl85EXrT1PfCUvAzmj8V3GIZhfCCfiX05x4BpkmgXpmxaPQG6UKrv63FsLONY971ShQbrPU17QVwm9J4HcbdmplXd2JG+zNPfpG3JlKotzUs78jd1oafniyk8iHnxq7AFY0fzwgYx+aoJYm6Gri+EG/yB1qnSd6CcLprBpMlPoqiPG1LTM+4JBs3QYGmSb6DYqtRQvqwmZh8UF19Py0EByVh8mt/ZT8b26P5a1o73aI7OutT9gqRQ7yZJOxxvg5o7LBqONrEs1s7G50Fo02BtBTILG9h1FjbL5d4UWM/cX6XsCiozK5umdF5x8nOK9v4qtyZ+YlPXG0jYuPi7Hpv1M3KPYxtKb3zf5PxLZvq4eYaxgurO01mvt4L40emoVbWq/d9J8oqJmYZPNgdze/3FlPuriTJmuBXq7buE+zQNRDiLKaHammd2v2HSFudvnqKg/9vVPlOer1jdz82EL8TpHXJ1cn8jXQm+y0TuX3B6j/LURMpQBbhn9C9yfVqYCihojiTx3I57L6NPa4uyGpJzutFHxyQZzpv+NxtydfsTtPconIN0t6afW4TT++Vn9DY20j8nlHknaU44z4DTidF/hoi1pGP4iQb+CstIRegym55wRFr6STS7VzH0PAND/CkxWwxJ957Bpxkgxwhuj4yBq6kMkPJqGyb07pT33HpbCX6ffhexn3GCgTPVQYAcJlsxYRuiPnNG8Z5Mh2yIu/+CjE/6oIbd+j/iFIgs8C20bfxKGjZlpPdMs3swIXuaCMszS4ImAQuQPHA7QVPVBUgeuJ2g6Qb/D4axu1KbYpjLkA3ZMDpsyIZsGB82ZEM2jA8bsiEbxocN2ZAN48OGbMiG8WFDNmTD+LAhG7JhfNiQDdkwPmzIhmwYHzZkQzaMDxu+8B/ez2RfoHkyKgAAAABJRU5ErkJggg=="
+                    style="float: left;">
+                <a>
+                    <a style="float: right;">
+                    {{post.post_date}}
+                </a>
+                    <p style="padding-top: 0.3%; font-size: 110%;">&nbsp;&nbsp;&nbsp;&nbsp;{{post.full_name}}</p>
+                    <p style="font-size: 90%; line-height: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{post.user_title}}</p>
+                </a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <h5 class="card-title">{{post.post_title}}</h5>
+            <p class="card-text">{{post.post_content}}</p>
+        </div>
+    </div>
+    <div class="card-header" id="likes-and-answers">
+        <a>{{post.likes}} Likes</a>&nbsp;&nbsp;&nbsp;
+        <a>{{post.answers}} Answers</a>
+        <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2" />
+      </svg></a>
+        <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+      </svg></a>
+
+
+        <!-- INCASE THE POST HAS ALREADY BEEN  SAVED -->
+
+        <!-- <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-off" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <line x1="3" y1="3" x2="21" y2="21" />
+        <path d="M17 17v3l-5 -3l-5 3v-13m1.178 -2.818c.252 -.113 .53 -.176 .822 -.176h6a2 2 0 0 1 2 2v7" />
+      </svg></a> -->
+
+        <!-- INCASE THE POST HAS ALREADY BEEN LIKED  -->
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+      </svg> -->
+        <br>
+    </div>
+    <div id="redirect_block" class="text-center" onclick="redirect_here('{{post.redirect_url}}');">
+        <a style="text-align: center; color:white; font-size:x-large; display: flex-item;">See all Answers</a>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+    #contactForm {
+        width: 110%;
+        padding-left: 20%;
+    }
+    
+    #post_question {
+        height: 10vh;
+        width: 10vh;
+        position: fixed;
+        z-index: 1000000000000;
+        bottom: 3vh;
+        right: 3vw;
+        border: none;
+    }
+    
+    img {
+        border-radius: 50%;
+        height: 8vh;
+        width: auto;
+    }
+    
+    #likes-and-answers {
+        height: 7.5vh;
+    }
+    
+    .reply {
+        margin-top: 3vh;
+        width: 90vw;
+        margin-left: 10vw;
+    }
+    
+    #popup_form {
+        display: none;
+        position: absolute;
+        height: 80vh;
+        width: 80vw;
+        margin-left: 10vw;
+        z-index: 999999999;
+        position: fixed;
+        top: -5%;
+    }
+    
+    #close_btn:hover {
+        cursor: pointer;
+    }
+    
+    #delete_option:hover {
+        background-color: red;
+    }
+    
+    #redirect_block {
+        display: flex;
+        height: 8vh;
+        width: 100%;
+        background-color: darkcyan;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #redirect_block:hover {
+        cursor: pointer;
+    }
+    
+    @media all and (max-width: 800px) {
+        #white-content {
+            width: 80vw;
+            height: 80vh;
+        }
+    }
+    
+    @media (min-height: 780px) {
+        #likes-and-answers {
+            height: 5.5vh;
+        }
+    }
+    
+    @media (min-height: 950px) {
+        #likes-and-answers {
+            height: 4.5vh;
+        }
+    }
+    
+    @media (min-height: 1100px) {
+        #likes-and-answers {
+            height: 3.5vh;
+        }
+    }
+</style>
+
+
+
+<script>
+    function redirect_here(name) {
+        window.location.pathname = name;
+    };
+
+
+    /* removing search section */
+
+    search_section = document.getElementsByClassName('search-container')[0];
+
+    search_section.style.display = 'none';
+</script>
+
+
+{% endblock content %}

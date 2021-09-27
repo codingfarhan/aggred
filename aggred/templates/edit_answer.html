@@ -1,0 +1,130 @@
+{% load static %} {% block content %} {% include "base.html" %}
+
+
+<link rel="stylesheet" href="{% static 'css/popup_form.css' %}">
+
+
+<!-- POPUP POST A QUESTION FORM  -->
+
+
+<div class="content" id="popup_form">
+
+    <div class="container">
+
+        <div class="row align-items-stretch justify-content-center no-gutters">
+
+            <div class="col-md-7" id="white-content">
+
+                <div class="form h-100 contact-wrap p-5">
+
+                    <!-- <a onclick="close_popup('popup_form');" id="close_btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/>
+                      </svg></a> -->
+                    <h3 class="text-center" id="form-heading">Edit Your Answer</h3>
+                    <form class="mb-5 text-center" method="post" id="contactForm" name="contactForm">
+                        {% csrf_token %}
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 form-group mb-3" id="form-title">
+                                <label for="" class="col-form-label">Title</label>
+                                <input type="text" class="form-control" name="title" value="{{answer_title}}" id="name" placeholder="Title of the Answer">
+                            </div>
+                            <!-- <div class="col-md-6 form-group mb-3">
+                                <label for="" class="col-form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
+                            </div> -->
+                        </div>
+                        <br>
+
+                        <!-- <div class="row">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="budget" class="col-form-label">Subject</label>
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Your subject">
+                            </div>
+                        </div> -->
+
+                        <div class="row mb-5">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="message" class="col-form-label" id="explanation">Elaborate</label>
+                                <textarea class="form-control" name="details" id="explanation" cols="30" rows="4" placeholder="Write about the solution in detail.">{{answer_content}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-5 form-group text-center">
+                                <input type="submit" name="submit_btn" class="btn btn-block btn-primary rounded-0 py-2 px-4" id="form-btn">
+                                <span class="submitting"></span>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- <div id="form-message-warning mt-4"></div> -->
+                    <!-- <div id="form-message-success">
+                        Your message was sent, thank you!
+                    </div> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- POPUP QUESTION FORM ENDS  -->
+
+
+<style>
+    #contactForm {
+        width: 110%;
+        padding-left: 20%;
+    }
+    
+    #post_question {
+        height: 10vh;
+        width: 10vh;
+        position: fixed;
+        z-index: 1000000000000;
+        bottom: 3vh;
+        right: 3vw;
+        border: none;
+    }
+    
+    #popup_form {
+        display: block;
+        position: absolute;
+        height: 80vh;
+        width: 80vw;
+        margin-left: 10vw;
+        z-index: 999999999;
+        position: fixed;
+        top: -5%;
+    }
+</style>
+
+
+<script>
+    function redirect_here(name) {
+        window.location.pathname = name;
+    };
+
+
+    /* removing search section */
+
+    search_section = document.getElementsByClassName('search-container')[0];
+
+    search_section.style.display = 'none';
+
+    /* using js to alter value of input field on submission of form: */
+
+    /*submit_btn = document.getElementById('form-btn').addEventListener('click', function() {
+        title_elem = document.getElementById('name');
+
+        title_txt = title_elem.innerText;
+
+        title_elem.value = title_txt;
+    });*/
+</script>
+
+
+
+{% endblock content %}

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+    <!-- FAVICON  -->
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon-aggred.png' %}">
     <title>Aggred</title>
 </head>
 
@@ -29,14 +34,14 @@
                 <ul class="navbar-nav">
 
                     <li style="padding-top: 2vh;" onclick="redirect_here('leaderboards');">
-                        <a href="" id="leaderboards" style="color: darkcyan; font-size: 120%; padding-bottom: 5%">Leaderboards</a>
+                        <a href="" id="leaderboards" style="color: white; font-size: 120%; padding-bottom: 5%">Leaderboards</a>
 
                         <a><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-crown" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffec00" fill="none" stroke-linecap="round" stroke-linejoin="round" id="leaderboard-icon">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
                           </svg></a>
 
-                    </li>&nbsp;&nbsp;&nbsp;
+                    </li>&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,8 +49,8 @@
                                 class="rounded-circle" alt="" style="height: 7vh; width: auto;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="http://localhost:8000/my_questions">My Questions</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:8000/saved_questions">Saved Questions</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8000/forum/profile/my_posts">My Questions</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8000/forum/profile_info/saved_posts">Saved Questions</a></li>
                             <li><a class="dropdown-item" href="http://localhost:8000/settings_">Settings</a></li>
                             <li><a class="dropdown-item" href="http://localhost:8000/signout">Signout</a></li>
                         </ul>
@@ -56,13 +61,13 @@
         </div>
     </nav>
 
-    <div class="search-container" style="height: 60vh;">
+    <div class="search-container">
 
         <form class="input-group" method="POST" style="padding-top: 28vh">
             {% csrf_token %}
-            <input type="search" class="form-control rounded border border-primary" id="search_question" placeholder="        Type a question" aria-label="Search" aria-describedby="search-addon" />
+            <input type="search" name="search_query" value="" class="form-control rounded border border-primary" id="search_question" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
             <!-- <br id="break"> -->
-            <button type="submit" class="btn btn-outline-primary">search</button>
+            <button type="submit" id="search_button" class="btn btn-outline-primary">search</button>
         </form>
     </div>
 
@@ -70,6 +75,10 @@
 
 
     <style>
+        .search-container {
+            height: 60vh;
+        }
+        
         form {
             width: 30vw;
             padding-left: 10vw;
