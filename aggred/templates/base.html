@@ -65,11 +65,107 @@
 
         <form class="input-group" method="POST" style="padding-top: 28vh">
             {% csrf_token %}
-            <input type="search" name="search_query" value="" class="form-control rounded border border-primary" id="search_question" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
+            <input type="search" name="search_query" class="form-control rounded border border-primary" id="search_question" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
             <!-- <br id="break"> -->
-            <button type="submit" id="search_button" class="btn btn-outline-primary">search</button>
+            <button type="button" id="search_button" class="btn btn-outline-primary" onclick="show_results();">search</button>
         </form>
     </div>
+
+
+
+    <!-- POPUP POST A QUESTION FORM  -->
+
+
+    <div class="content" id="popup_form">
+
+        <div class="container">
+
+            <div class="row align-items-stretch justify-content-center no-gutters">
+
+                <div class="col-md-7" id="white-content">
+
+                    <div class="form h-100 contact-wrap p-5">
+
+                        <a onclick="close_popup('popup_form');" id="close_btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/>
+                      </svg></a>
+                        <h3 class="text-center" id="form-heading"></h3>
+                        <br>
+                        <form class="mb-5 text-center" method="post" id="contactForm" name="contactForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12 form-group mb-3" id="form-title">
+                                    <label for="" class="col-form-label">Title *</label>
+                                    <input type="text" class="form-control" name="title" id="name" placeholder="Your question...">
+                                </div>
+                                <!-- <div class="col-md-6 form-group mb-3">
+                                <label for="" class="col-form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
+                            </div> -->
+                            </div>
+
+                            <!-- <div class="row">
+                            <div class="col-md-12 form-group mb-3">
+                                <label for="budget" class="col-form-label">Subject</label>
+                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Your subject">
+                            </div>
+                        </div> -->
+
+                            <div class="row mb-5">
+                                <div class="col-md-12 form-group mb-3">
+                                    <label for="message" class="col-form-label" id="explanation"></label>
+                                    <textarea class="form-control" name="details" style="text-align:center;" id="explanation_value" cols="30" rows="4" placeholder="Write about the problem in detail."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- CATEGORIZE YOUR POST  -->
+                            <div class="category-options text-center">
+
+                                <h5 style="color: black; font-family: sans-serif">(optional)</h5>
+
+                                <!-- <input list="class" id="class_input" name="class" placeholder="     Choose Class/Degree" class="col-sm-3 custom-select custom-select-sm rounded"> -->
+                                <select id="post_class" name="post_class">
+                                <option value="None">Choose Class</option>
+                        
+                        </select>
+
+                                <br>
+
+                                <!-- <input list="subject_or_course" id="subject_or_course_input" name="subject_or_course" placeholder="     Choose Subject/Course" class="col-sm-3 custom-select custom-select-sm rounded"> -->
+                                <select id="post_subject_or_course" name="post_subject_or_course">
+                                <option value="None">Choose Subject</option>
+                        
+                        </select>
+                            </div>
+
+                            <br><br>
+
+                            <div class="row justify-content-center">
+                                <div class="col-md-5 form-group text-center">
+                                    <input type="submit" name="post_question" class="btn btn-block btn-primary rounded-0 py-2 px-4" id="form-btn">
+                                    <span class="submitting"></span>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- <div id="form-message-warning mt-4"></div> -->
+                        <!-- <div id="form-message-success">
+                        Your message was sent, thank you!
+                    </div> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- POPUP QUESTION FORM ENDS  -->
+
+    {% if logged_in == 'True' %}
+
+    <button id="post_question" class="rounded-circle" onclick="popup_form('ask');"><i class="bi bi-pencil-square" style="font-size: 200%; color: white;"></i></button> {% endif %}
+    <!-- END OF FIXED BUTTON  -->
 
     {% block content %} {% endblock %}
 
@@ -87,6 +183,50 @@
         
         #leaderboard-icon {
             padding-bottom: 5%;
+        }
+        
+        #post_question {
+            height: 10vh;
+            width: 10vh;
+            position: fixed;
+            z-index: 1000000000000;
+            bottom: 3vh;
+            right: 3vw;
+            border: none;
+            background-color: darkcyan;
+        }
+        
+        #popup_form {
+            display: none;
+            position: absolute;
+            height: 80vh;
+            width: 80vw;
+            margin-left: 10vw;
+            z-index: 999999999;
+            position: fixed;
+            top: -5%;
+        }
+        
+        #close_btn:hover {
+            cursor: pointer;
+        }
+        
+        input {
+            text-align: center;
+        }
+        
+        select {
+            margin-top: 0.5%;
+            text-align: center;
+            border: none;
+            height: 6vh;
+            width: 35vw;
+            color: white;
+            background-color: darkcyan;
+        }
+        
+        select:hover {
+            cursor: pointer;
         }
         
         @media all and (max-width: 600px) {
@@ -113,6 +253,8 @@
             window.location.pathname = name;
         };
     </script>
+
+
 
 </body>
 

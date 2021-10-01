@@ -25,6 +25,11 @@ class post(models.Model):
     answers = models.IntegerField(default=0)
 
 
+    grade = models.CharField(default="None", max_length=10)
+    degree = models.CharField(default="None", max_length=25)
+    subject = models.CharField(default="None", max_length=20)
+
+
 
 class answer(models.Model):
 
@@ -72,5 +77,3 @@ class reply(models.Model):
     reply_date = models.DateTimeField(auto_now_add=True)
 
     likes = models.IntegerField(default=0)
-
-

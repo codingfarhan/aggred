@@ -93,30 +93,13 @@ def forum(request):
         explanation = request.POST.get('details', False)
         post_form_submit = request.POST.get('post_question', False)
 
-        print(title, explanation, form_submit)
+        post_class = request.POST.get('post_class', False)
+        post_subject_or_course = request.POST.get('post_subject_or_course', False)
+
+
+        print(title, explanation, post_class, post_subject_or_course)
 
         filled_post_form = title and explanation and post_form_submit
-
-
-
-
-        # CHECKING IF SEARCH FORM HAS BEEN FILLED:
-
-        search_query = request.POST.get('search_query', False)
-
-        # pressed search_btn or not:
-        pressed_search_btn = request.POST.get('search_query', False)
-
-
-        #filters:
-        education_level = request.POST.get('education_level', False)
-        class_ = request.POST.get('class', False)
-        subject_or_course = request.POST.get('subject_or_course', False)
-
-
-
-        filled_search_form = search_query and pressed_search_btn and education_level and class_ and subject_or_course
-
 
 
 
@@ -124,11 +107,11 @@ def forum(request):
 
 
 
-        if not filled_post_form and not filled_search_form:
+        if not filled_post_form:
 
             return render(request, 'error_message.html', {'heading': 'An Unexpected Error Occured', 'message': 'Please try again later.'})
 
-        elif filled_post_form and not filled_search_form:
+        elif filled_post_form:
 
             # if a question is posted:
 
@@ -138,23 +121,14 @@ def forum(request):
 
                 post_id = str(uuid.uuid4())
 
-                new_post = post(post_id=post_id, email=request.user.email, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, user_title=request.user.title)
+                new_post = post(post_id=post_id, email=request.user.email, grade=post_class, subject=post_subject_or_course, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, user_title=request.user.title)
                 new_post.save()
 
                 return redirect(f'forum/post/{post_id}')
 
+        else:
 
-        elif not filled_post_form and filled_search_form:
-
-            # if search form is posted:
-
-            if class_ and subject_or_course:
-
-                return HttpResponseRedirect(f'forum/result/{class_}/{subject_or_course}/{search_query.replace(" ", "+")}')
-
-            else:
-
-                return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again later'})
+            return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again in a while'})
 
 
 
@@ -185,10 +159,24 @@ def category_posts(request, class_, subject, search_query):
     
     if request.method == 'GET':
 
+
+        result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject, title=search_query.replace("+", " ")).values()), default=myconverter)
         
-        return render(request, 'category_posts.htlm', {})
+
+        context = []
 
 
+        if result_set == '':
+            qs = []
+
+        else:
+            qs = json.loads(result_set)
+
+            for item in qs:
+                context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"form/post/{item['post_id']}"})
+
+
+        return render(request, 'category_posts.htlm', {'context': context})
 
 
 
