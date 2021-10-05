@@ -52,7 +52,7 @@
                             <li><a class="dropdown-item" href="http://localhost:8000/forum/profile/my_posts">My Questions</a></li>
                             <li><a class="dropdown-item" href="http://localhost:8000/forum/profile_info/saved_posts">Saved Questions</a></li>
                             <li><a class="dropdown-item" href="http://localhost:8000/settings_">Settings</a></li>
-                            <li><a class="dropdown-item" href="http://localhost:8000/signout">Signout</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8000/signout">Logout</a></li>
                         </ul>
                     </li>&nbsp;&nbsp;
                 </ul>
@@ -63,8 +63,10 @@
 
     <div class="search-container">
 
-        <form class="input-group" method="POST" style="padding-top: 28vh">
+        <form class="input-group" method="POST" style="padding-top: 36vh">
+
             {% csrf_token %}
+
             <input type="search" name="search_query" class="form-control rounded border border-primary" id="search_question" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
             <!-- <br id="break"> -->
             <button type="button" id="search_button" class="btn btn-outline-primary" onclick="show_results();">search</button>
@@ -121,7 +123,7 @@
                             <!-- CATEGORIZE YOUR POST  -->
                             <div class="category-options text-center">
 
-                                <h5 style="color: black; font-family: sans-serif">(optional)</h5>
+                                <h5 style="color: black; font-family: sans-serif">Optional</h5>
 
                                 <!-- <input list="class" id="class_input" name="class" placeholder="     Choose Class/Degree" class="col-sm-3 custom-select custom-select-sm rounded"> -->
                                 <select id="post_class" name="post_class">
@@ -162,9 +164,9 @@
 
     <!-- POPUP QUESTION FORM ENDS  -->
 
-    {% if logged_in == 'True' %}
+    {% if logged_in %}
 
-    <button id="post_question" class="rounded-circle" onclick="popup_form('ask');"><i class="bi bi-pencil-square" style="font-size: 200%; color: white;"></i></button> {% endif %}
+    <button id="post_question" class="rounded-circle border border-light" onclick="popup_form('ask');"><i class="bi bi-pencil-square" style="font-size: 200%; color: white;"></i></button> {% endif %}
     <!-- END OF FIXED BUTTON  -->
 
     {% block content %} {% endblock %}
@@ -192,7 +194,6 @@
             z-index: 1000000000000;
             bottom: 3vh;
             right: 3vw;
-            border: none;
             background-color: darkcyan;
         }
         

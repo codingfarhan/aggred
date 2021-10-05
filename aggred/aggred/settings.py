@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['aggred.herokuapp.com', 'localhost']
 INSTALLED_APPS = [
     'forum',
     'profiles',
+    'leaderboards',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

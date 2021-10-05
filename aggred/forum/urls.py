@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('forum', views.forum, name='forum'),
 
-    path('forum/result/<class_>/<subject>/<search_query>', views.category_posts, name='category_posts'),
+    path('forum/result/class_or_degree=<class_>/subject_or_field=<subject>/search=<search_query>', views.category_posts, name='category_posts'),
     
     path('forum/post/<post_id>', views.post_id, name='post_id'),
 

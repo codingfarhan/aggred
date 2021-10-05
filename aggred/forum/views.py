@@ -75,7 +75,7 @@ def home(request):
 
             logged_in = False
 
-        return render(request, 'home.html', {'logged_in': f'{logged_in}'})
+        return render(request, 'home.html', {'logged_in':logged_in})
 
 
 
@@ -134,17 +134,13 @@ def forum(request):
 
     elif request.method == 'GET':
 
-        if request.user.is_verified:
+        if request.user.is_verified or request.user.social_user:
 
-            logged_in = 'True'
-
-        elif profile().__class__.objects.filter(email=request.user.email).exists():
-
-            logged_in = 'True'
+            logged_in = True
 
         else:
 
-            logged_in = 'False'
+            logged_in = False
 
         return render(request, 'forum.html', {'logged_in': logged_in})
 
@@ -159,26 +155,82 @@ def category_posts(request, class_, subject, search_query):
     
     if request.method == 'GET':
 
+        search_query = search_query.replace("+", " ")
 
-        result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject, title=search_query.replace("+", " ")).values()), default=myconverter)
+        print(class_, subject, search_query)
+
+        no_results = 'False'
+
+
+        # if search_query != " " and education_level == None:
+
+        #     print('search query is ', search_query)
+
+        #     result_set = json.dumps(list(post.objects.filter(post_title=search_query).values()), default=myconverter)
+
+        # elif  search_query == " " and education_level != None:
+            
+        #     # Here, education_level != "None" means that the user has selected School Level (Since it is the only option) so in this case we will only show results for school level questions
+
+        #     if class_ == None and subject_or_course == None:
+
+        #         print('search query is ', search_query)
+
+        #         result_set = json.dumps(list(post.objects.filter(grade__icontains="Class ").values()), default=myconverter)
+
+        #     elif class_ != None and subject_or_course == None:
+
+        #         print('search query is ', search_query)
+
+        #         result_set = json.dumps(list(post.objects.filter(grade=class_).values()), default=myconverter)
+
+        #     elif class_ != None and subject_or_course != None:
+
+        #         print('search query is ', search_query)
+
+        #         result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject_or_course).values()), default=myconverter)
+
+
+        if search_query == "all":
+
+            print('search query is ', search_query)
+
+            result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject).values()), default=myconverter)
+
         
+        elif search_query != "all":
+
+            print('search query is ', search_query)
+
+            result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject, post_title__icontains=search_query).values()), default=myconverter)
+
+
+
 
         context = []
 
+        qs = json.loads(result_set)
+        print(qs)
 
-        if result_set == '':
+
+        if result_set == '' or len(qs) == 0 or qs[0] == None:
             qs = []
 
         else:
-            qs = json.loads(result_set)
 
             for item in qs:
-                context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"form/post/{item['post_id']}"})
+                context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"forum/post/{item['post_id']}"})
 
 
-        return render(request, 'category_posts.htlm', {'context': context})
 
+        if result_set != '' and len(context) == 0:
+            no_results = 'True'
 
+        
+        logged_in = request.user.is_verified or request.user.social_user
+        print(logged_in)
+
+        return render(request, 'category_posts.html', {'context': context, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in})
 
 
 
@@ -566,4 +618,7 @@ def my_posts(request):
             context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"form/post/{item['post_id']}"})
 
 
-        return render(request, 'my_posts.html', {'context': context})
+        no_of_posts = len(context)
+        logged_in = request.user.is_verified or request.user.social_user
+
+        return render(request, 'my_posts.html', {'context': context, 'no_of_posts': no_of_posts, 'logged_in': logged_in}) 

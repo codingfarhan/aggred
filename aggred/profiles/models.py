@@ -55,6 +55,7 @@ class profile(AbstractUser):
     first_name = models.TextField(max_length=30)
     last_name = models.TextField(max_length=30)
     crowns = models.IntegerField(default=0)
+    country = models.CharField(max_length=70)
 
     start_date = models.DateTimeField(auto_now_add=True)
 

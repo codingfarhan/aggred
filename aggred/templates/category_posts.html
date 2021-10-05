@@ -1,8 +1,82 @@
 {% load static %} {% block content %} {% include "base.html" %}
 
 
+<link rel="stylesheet" href="{% static 'css/popup_form.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
-<div class="post">
+
+<!-- SEARCH BAR AND FILTERS  -->
+
+
+<div class="search">
+
+    <form class="input-group" style="margin-top: 5vh;">
+
+        {% if search != "all" %}
+
+        <input type="search" name="search_query" class="form-control rounded border border-primary" value="{{search}}" id="search_question_2" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
+        <!-- <br id="break"> -->
+        <button type="button" id="search_button" class="btn btn-outline-primary" onclick="show_results();">search</button> {% else %}
+        <input type="search" name="search_query" class="form-control rounded border border-primary" id="search_question_2" placeholder="                       Type a question" aria-label="Search" aria-describedby="search-addon" />
+        <!-- <br id="break"> -->
+        <button type="button" id="search_button" class="btn btn-outline-primary" onclick="show_results();">search</button> {% endif %}
+
+    </form>
+
+    <div class="category-options text-center" style="margin-top: 5vh;">
+
+        <h5 style="color: grey; font-family: sans-serif">Filter:</h5>
+
+        <!-- <input list="education_level" id="education_level_input" name="education_level" placeholder="     Choose Education Level" class="col-sm-3 custom-select custom-select-sm rounded"> -->
+        <select id="education_level" name="education_level">
+        <option value="None" selected>Choose Education Level</option>
+        <option value="School Level">School Level</option>
+        <!-- <option value="Undergraduate Level">Undergraduate Level</option>
+        <option value="Postgraduate Level">Postgraduate Level</option> -->
+    </select>
+
+
+        <br>
+
+        <!-- <input list="class" id="class_input" name="class" placeholder="     Choose Class/Degree" class="col-sm-3 custom-select custom-select-sm rounded"> -->
+        <select id="class" name="class">
+            <option value="None">Choose Class</option>
+    
+    </select>
+
+        <br>
+
+        <!-- <input list="subject_or_course" id="subject_or_course_input" name="subject_or_course" placeholder="     Choose Subject/Course" class="col-sm-3 custom-select custom-select-sm rounded"> -->
+        <select id="subject_or_course" name="subject_or_course">
+            <option value="None">Choose Subject</option>
+    
+    </select>
+    </div>
+
+    <br>
+    <br>
+    <p style="text-align: center;"> <b>{{number_of_results}}</b> results</p>
+    <hr style="margin-bottom: 0px;">
+
+</div>
+
+
+
+{% if no_results == 'True' %}
+
+<div class="message-text">
+    <h4 style="text-align: center; margin-top: 20vh">Oops! No results found. Try a different question.</h4>
+</div>
+
+{% endif %}
+
+
+
+<!-- POST RESULTS  -->
+{% for post in context %}
+
+
+<div class="post" style="margin-top: 0px;">
     <div class="card" style="width: 100vw;">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -55,20 +129,11 @@
 </div>
 {% endfor %}
 
+
 <style>
     #contactForm {
         width: 110%;
         padding-left: 20%;
-    }
-    
-    #post_question {
-        height: 10vh;
-        width: 10vh;
-        position: fixed;
-        z-index: 1000000000000;
-        bottom: 3vh;
-        right: 3vw;
-        border: none;
     }
     
     img {
@@ -85,17 +150,6 @@
         margin-top: 3vh;
         width: 90vw;
         margin-left: 10vw;
-    }
-    
-    #popup_form {
-        display: none;
-        position: absolute;
-        height: 80vh;
-        width: 80vw;
-        margin-left: 10vw;
-        z-index: 999999999;
-        position: fixed;
-        top: -5%;
     }
     
     #close_btn:hover {
@@ -117,6 +171,55 @@
     
     #redirect_block:hover {
         cursor: pointer;
+    }
+    
+    input {
+        text-align: center;
+    }
+    
+    select {
+        margin-top: 0.5%;
+        text-align: center;
+        border: none;
+        height: 6vh;
+        width: 35vw;
+        color: white;
+        background-color: darkcyan;
+    }
+    
+    select:hover {
+        cursor: pointer;
+    }
+    
+    option {
+        color: white;
+        background-color: black;
+    }
+    
+    #post_class {
+        margin-top: 0.5%;
+        text-align: center;
+        border: none;
+        height: 4vh;
+        width: 80%;
+        color: white;
+        background-color: darkcyan;
+    }
+    
+    #post_subject_or_course {
+        margin-top: 0.5%;
+        text-align: center;
+        border: none;
+        height: 4vh;
+        width: 80%;
+        color: white;
+        background-color: darkcyan;
+    }
+    
+    @media all and (max-width: 600px) {
+        select {
+            width: 80vw;
+        }
     }
     
     @media all and (max-width: 800px) {
@@ -148,11 +251,198 @@
 
 
 <script>
+    document.getElementsByClassName('search-container')[0].style.display = 'none';
+
     function redirect_here(name) {
         window.location.pathname = name;
     }
-
-    document.getElementById('search-container').style.display = 'none';
 </script>
 
-{% endblock %}
+
+
+<script>
+    /* disable the last two input field by default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             */
+
+    select1 = document.getElementById('education_level');
+    select2 = document.getElementById('class');
+    select3 = document.getElementById('subject_or_course');
+
+    if (select1.value == "School Level") {
+        select2.style.display = "";
+        select3.style.display = "";
+    } else {
+        select2.style.display = "none";
+        select3.style.display = "none";
+    }
+
+    /* set value of next datalist element as: "Maths", "Science", etc */
+
+    subject_list = ['English', 'Hindi', 'Urdu', 'Sanskrit', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Sindhi', 'Marathi', 'Gujarati', 'Manipuri', 'Malayalam', 'Odia', 'Assamese', 'Kannada', 'Arabic', 'Tibetan', 'French', 'German', 'Russian', 'Persian', 'Nepali', 'Limboo', 'Lepcha', 'Telugu Telangana', 'BODO', 'Tangkhul', 'Japanese', 'Bhutia', 'Spanish', 'Kashmiri', 'Mizo', 'Bahasa Melayu', 'History', 'Political Science', 'Geography', 'Economics', 'Carnatic Music', 'Hindustani Music', 'Psychology', 'Sociology', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Biotechnology', 'Physical Education', 'Painting', 'Sculpture', 'Art', 'Business Studies', 'Accountancy', 'Dance', 'Home Science', 'Informatics Practices', 'Computer Science', 'Entrepreneurship', 'National Caded Corps (NCC)', 'Information Technology', 'Agriculture', 'Marketing', 'Yoga', 'Fashion', 'Artificial Intelligence', 'Media', 'Banking'];
+
+    for (subject in subject_list) {
+
+        new_option = document.createElement('option');
+
+        option_value = subject_list[subject];
+        new_option.value = option_value;
+        new_option.innerText = option_value;
+
+        select3.appendChild(new_option);
+
+    };
+
+
+    for (var i = 1; i <= 12; i++) {
+
+        new_option = document.createElement('option');
+
+        option_value = `Class ${i}`;
+        new_option.value = option_value;
+        new_option.innerText = option_value;
+
+        select2.appendChild(new_option);
+    };
+
+
+
+    select1.addEventListener('change', function() {
+
+        if (select1.value == "School Level") {
+            select2.style.display = "";
+            select3.style.display = "";
+        } else {
+            select2.style.display = "none";
+            select3.style.display = "none";
+        }
+    })
+</script>
+
+
+
+<script>
+    function show_results() {
+
+        search_query = document.getElementById('search_question_2').value;
+
+        if (search_query != "") {
+            search_query = search_query.replace(" ", "+");
+        } else {
+            search_query = "all"
+            console.log('Empty value in input field!!');
+        }
+
+        education_level = document.getElementById('education_level').value;
+        class_ = document.getElementById('class').value;
+        subject_or_course = document.getElementById('subject_or_course').value;
+
+
+        if (!(education_level == "None" && search_query == "all")) {
+            window.location.pathname = `forum/result/class_or_degree=${class_}/subject_or_field=${subject_or_course}/search=${search_query}`;
+        }
+    };
+</script>
+
+
+<script>
+    function close_footer() {
+        footer = document.getElementById('footer');
+
+        footer.style.display = 'none';
+    };
+
+    function popup_form(action) {
+        popup = document.getElementById('popup_form');
+        body_tag = document.getElementsByTagName('body')[0];
+
+        // body_tag.style.filter = "blur(8px)";
+
+
+        popup.style.display = 'block';
+        popup.style.backdropFilter = "blur(3px)";
+
+        // manipulating form field names as per the action:
+
+        form_heading = document.getElementById('form-heading');
+        form_title = document.getElementById('form-title');
+        explanation = document.getElementById('explanation');
+
+        form_submit = document.getElementById('form-btn');
+
+
+        if (action == 'ask') {
+            form_heading.innerText = 'Ask a Question';
+            form_title.style.display = 'block';
+            explanation.innerText = 'Explain *';
+            form_submit.value = "posting_question";
+
+        } else if (action == 'answer') {
+            form_heading.innerText = "Answer randomUser's question";
+            form_title.style.display = 'block';
+            explanation.innerText = 'Explain *';
+            form_submit.value = 'answering_question';
+
+        } else if (action == 'reply') {
+            form_heading.innerText = "Reply to randomUser's answer";
+            form_title.style.display = 'none';
+            explanation.innerText = 'Explain *';
+            form_submit.value = "replying_to_answer";
+
+        }
+    };
+
+    function close_popup(id_elem) {
+
+        /* close the form */
+        popup = document.getElementById(id_elem);
+        popup.style.display = 'none';
+
+
+        document.getElementById('name').value = "";
+        document.getElementById('explanation_value').value = "";
+    }
+</script>
+
+
+
+
+
+<script>
+    select_post1 = document.getElementById('post_class');
+    select_post2 = document.getElementById('post_subject_or_course');
+
+
+    for (var i = 1; i <= 12; i++) {
+
+        new_option = document.createElement('option');
+
+        option_value = `Class ${i}`;
+        new_option.value = option_value;
+        new_option.innerText = option_value;
+
+        select_post1.appendChild(new_option);
+    };
+
+
+    /* set value of next datalist element as: "Maths", "Science", etc */
+
+    subject_list = ['English', 'Hindi', 'Urdu', 'Sanskrit', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Sindhi', 'Marathi', 'Gujarati', 'Manipuri', 'Malayalam', 'Odia', 'Assamese', 'Kannada', 'Arabic', 'Tibetan', 'French', 'German', 'Russian', 'Persian', 'Nepali', 'Limboo', 'Lepcha', 'Telugu Telangana', 'BODO', 'Tangkhul', 'Japanese', 'Bhutia', 'Spanish', 'Kashmiri', 'Mizo', 'Bahasa Melayu', 'History', 'Political Science', 'Geography', 'Economics', 'Carnatic Music', 'Hindustani Music', 'Psychology', 'Sociology', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Biotechnology', 'Physical Education', 'Painting', 'Sculpture', 'Art', 'Business Studies', 'Accountancy', 'Dance', 'Home Science', 'Informatics Practices', 'Computer Science', 'Entrepreneurship', 'National Caded Corps (NCC)', 'Information Technology', 'Agriculture', 'Marketing', 'Yoga', 'Fashion', 'Artificial Intelligence', 'Media', 'Banking'];
+
+    for (subject in subject_list) {
+
+        new_option = document.createElement('option');
+
+        option_value = subject_list[subject];
+        new_option.value = option_value;
+        new_option.innerText = option_value;
+
+        select_post2.appendChild(new_option);
+
+    };
+</script>
+
+
+
+
+
+
+{% endblock content %}

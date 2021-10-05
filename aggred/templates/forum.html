@@ -30,7 +30,7 @@
 
 
 
-<div class="category-options text-center">
+<div class="category-options text-center" style="margin-top: 5vh;">
 
     <h2 style="color: white; font-family: sans-serif">Filters</h2>
 
@@ -324,15 +324,7 @@
 
 
 <script>
-    /* disable the last two input field by default 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    education_level_input = document.getElementById('education_level_input');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    class_input = document.getElementById('class_input');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    subject_input = document.getElementById('subject_or_course_input');
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    class_input.disabled = false;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    subject_input.disabled = false;
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
+    /* disable the last two input field by default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             */
 
     select1 = document.getElementById('education_level');
     select2 = document.getElementById('class');
@@ -391,28 +383,6 @@
 
 
 <script>
-    /* filter values 
-
-            class_ = "None";
-            subject_or_course = "None";
-
-            education_level = document.getElementById('education_level');
-
-            education_level.addEventListener('change', function() {
-
-                console.log('listening to event.....')
-
-                if (education_level.value == "School Level") {
-
-                    console.log('education level is School Level')
-                    class_ = document.getElementById('class').value;
-                    subject_or_course = document.getElementById('subject_or_course').value;
-                };
-            });
-        */
-
-
-
     function show_results() {
 
         search_query = document.getElementById('search_question').value;
@@ -429,7 +399,7 @@
 
 
         if (!(education_level == "None" && search_query == "all") || (search_query != "all")) {
-            window.location.pathname = `forum/result/${class_}/${subject_or_course}/${search_query}`;
+            window.location.pathname = `forum/result/class_or_degree=${class_}/subject_or_field=${subject_or_course}/search=${search_query}`;
         }
     };
 </script>
