@@ -82,9 +82,6 @@ def home(request):
 
     elif request.method == 'GET':
 
-        important_details_form(request)
-
-
         if request.user.is_active:
 
             logged_in = True
