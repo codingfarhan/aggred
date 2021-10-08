@@ -20,7 +20,9 @@
 <body>
 
 
-    <div class="card container">
+    <form class="card container" method="POST">
+        {% csrf_token %}
+
         <div class="card-header text-center text-white display-6 row" style="background-color: darkcyan;">
             Required Info
         </div>
@@ -306,7 +308,7 @@
 
             <button type="submit" class="rounded btn btn-lg text-white" style="background-color: darkcyan;">Get Started</button>
 
-        </div>
+    </form>
 
 </body>
 

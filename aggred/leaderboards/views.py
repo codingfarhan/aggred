@@ -2,6 +2,24 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from profiles.models import profile
 import json
+from django.http import Http404, HttpResponseRedirect
+
+
+
+
+
+# helper function:
+def important_details_form(request):
+
+    if request.user.country == '' or request.user.category == '':
+
+        return HttpResponseRedirect('/signup/important_form')
+
+    else:
+
+        pass
+
+
 
 
 
@@ -10,6 +28,8 @@ import json
 def leaderboards(request, region):
 
     if request.method == 'GET':
+
+        important_details_form(request)
 
 
         if region == 'Worldwide':

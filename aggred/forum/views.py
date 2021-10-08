@@ -14,6 +14,22 @@ from profiles.models import profile
 
 
 
+
+# helper function:
+def important_details_form(request):
+
+    if request.user.country == '' or request.user.category == '':
+
+        return HttpResponseRedirect('/signup/important_form')
+
+    else:
+
+        pass
+
+
+
+
+
 def myconverter(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
@@ -65,6 +81,8 @@ def home(request):
 
 
     elif request.method == 'GET':
+
+        important_details_form(request)
 
 
         if request.user.is_active:
@@ -134,6 +152,8 @@ def forum(request):
 
     elif request.method == 'GET':
 
+        important_details_form(request)
+
         if request.user.is_authenticated or request.user.social_user:
 
             logged_in = True
@@ -154,6 +174,8 @@ def category_posts(request, class_, subject, search_query):
 
     
     if request.method == 'GET':
+
+        important_details_form(request)
 
         search_query = search_query.replace("+", " ")
 
@@ -288,10 +310,10 @@ def category_posts(request, class_, subject, search_query):
 
 
 
-@login_required(login_url='signin')
 def post_id(request, post_id):
 
     if request.method == 'GET':
+
 
         # sending post data:
 
@@ -465,6 +487,8 @@ def edit_post(request, post_id):
 
     if request.method == 'GET':
 
+        important_details_form(request)
+
         post_data = post.objects.filter(post_id=post_id).first()
 
         post_content = post_data.post_content
@@ -502,6 +526,8 @@ def edit_answer(request, answer_id):
 
     if request.method == 'GET':
 
+        important_details_form(request)
+
 
         answer_content = answer_.answer_content
         answer_title = answer_.answer_title
@@ -537,6 +563,8 @@ def edit_reply(request, reply_id):
 
     if request.method == 'GET':
 
+        important_details_form(request)
+
         content = reply_.reply_content
 
         logged_in = request.user.is_authenticated or request.user.social_user
@@ -567,6 +595,8 @@ def delete_post(request, post_id):
 
 
     if request.method == 'GET':
+
+        important_details_form(request)
 
         qs = answer.objects.filter(post_id=post_id)
         delete_ = True
@@ -630,6 +660,8 @@ def delete_answer(request, answer_id):
     
     if request.method == 'GET':
 
+        important_details_form(request)
+
         return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this answer? This action cannot be reversed.', 'redirect_url': f'forum/post/{answer_.post_id}'})
 
 
@@ -651,6 +683,8 @@ def delete_reply(request, reply_id):
 
     if request.method == 'GET':
 
+        important_details_form(request)
+
         return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this reply?', 'redirect_url': f'forum/post/{reply_.post_id}'})
 
 
@@ -668,7 +702,11 @@ def delete_reply(request, reply_id):
 @login_required(login_url='signin')
 def saved_posts(request):
 
-    pass
+    if request.method == 'GET':
+
+        important_details_form(request)
+
+        pass
 
 
 
@@ -677,6 +715,8 @@ def saved_posts(request):
 def my_posts(request):
 
     if request.method == 'GET':
+
+        important_details_form(request)
 
         user_email = request.user.email
 
