@@ -97,11 +97,11 @@ def forum(request):
         post_subject_or_course = request.POST.get('post_subject_or_course', False)
 
 
-        print(title, explanation, post_class, post_subject_or_course)
+        print(title, explanation, post_class, post_subject_or_course, post_form_submit)
 
-        filled_post_form = title and explanation and post_form_submit
+        filled_post_form = title != False and explanation  != False and post_form_submit != False
 
-
+        print(filled_post_form)
 
         full_name = request.user.first_name + ' ' + request.user.last_name
 
@@ -115,7 +115,7 @@ def forum(request):
 
             # if a question is posted:
 
-            if post_form_submit == "posting_question":
+            if post_form_submit == "POST":
 
                 # saving post:
 
@@ -134,7 +134,7 @@ def forum(request):
 
     elif request.method == 'GET':
 
-        if request.user.is_verified or request.user.social_user:
+        if request.user.is_authenticated or request.user.social_user:
 
             logged_in = True
 
@@ -227,10 +227,61 @@ def category_posts(request, class_, subject, search_query):
             no_results = 'True'
 
         
-        logged_in = request.user.is_verified or request.user.social_user
+        logged_in = request.user.is_authenticated or request.user.social_user
         print(logged_in)
 
         return render(request, 'category_posts.html', {'context': context, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in})
+
+
+    elif request.method == 'POST':
+
+
+        # CHECKING IF POST FORM HAS BEEN FILLED:
+
+        title = request.POST.get('title', False)
+        explanation = request.POST.get('details', False)
+        post_form_submit = request.POST.get('post_question', False)
+
+        post_class = request.POST.get('post_class', False)
+        post_subject_or_course = request.POST.get('post_subject_or_course', False)
+
+
+        print(title, explanation, post_class, post_subject_or_course, post_form_submit)
+
+        filled_post_form = title != False and explanation  != False and post_form_submit != False
+
+        print(filled_post_form)
+
+        full_name = request.user.first_name + ' ' + request.user.last_name
+
+
+
+        if not filled_post_form:
+
+            return render(request, 'error_message.html', {'heading': 'An Unexpected Error Occured', 'message': 'Please try again later.'})
+
+        elif filled_post_form:
+
+            # if a question is posted:
+
+            if post_form_submit == "POST":
+
+                # saving post:
+
+                post_id = str(uuid.uuid4())
+
+                new_post = post(post_id=post_id, email=request.user.email, grade=post_class, subject=post_subject_or_course, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, user_title=request.user.title)
+                new_post.save()
+
+                return HttpResponseRedirect(f'/forum/post/{post_id}')
+
+        else:
+
+            return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again in a while'})
+
+
+
+
 
 
 
@@ -320,8 +371,11 @@ def post_id(request, post_id):
 
                 replies_exist = 'False'
 
+            logged_in = request.user.is_authenticated or request.user.social_user
+            
 
-            return render(request, 'post.html', {'current_user': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title})
+
+            return render(request, 'post.html', {'current_user': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in})
 
 
     elif request.method == 'POST':
@@ -329,9 +383,15 @@ def post_id(request, post_id):
 
         title = request.POST.get('title', False)
         explanation = request.POST.get('details', False)
-        post_form_submit = request.POST.get('submit_btn', False)
+        post_form_submit = request.POST.get('post_question', False)
 
-        filled_post_form = title and explanation and post_form_submit
+        class_ = request.POST.get('post_class', False)
+        subject = request.POST.get('post_subject_or_course', False)
+
+
+        filled_post_or_answer_form = title != False and explanation != False and post_form_submit != False
+        filled_reply_form = explanation != False and post_form_submit != False
+
 
         full_name = request.user.first_name + ' ' + request.user.last_name
 
@@ -339,10 +399,10 @@ def post_id(request, post_id):
 
         # for debugging:
 
-        print('for debugging: ', title, explanation, post_form_submit)
+        print('for debugging: ', title)
 
 
-        if not filled_post_form and len(post_form_submit.split(',')) != 3:
+        if not filled_post_or_answer_form and not filled_reply_form:
 
             return render(request, 'error_message.html', {'heading': 'An Error Occured', 'message': 'Please try again later.'})
 
@@ -350,19 +410,19 @@ def post_id(request, post_id):
 
             # if a question is posted:
 
-            if post_form_submit == "posting_question":
+            if post_form_submit == "POST":
 
                 # saving post:
 
                 post_id = str(uuid.uuid4())
 
-                new_post = post(post_id=post_id, email=request.user.email, user_title=request.user.title, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation)
+                new_post = post(post_id=post_id, email=request.user.email, user_title=request.user.title, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, grade=class_, subject=subject)
                 new_post.save()
 
                 return HttpResponseRedirect(request.path_info)
 
 
-            elif post_form_submit == "answering_question":
+            elif post_form_submit == "Answer":
 
                 # saving answer:
 
@@ -372,14 +432,24 @@ def post_id(request, post_id):
                 new_ans = answer(post_id=post_id, answer_id=ans_id, full_name=full_name, email=request.user.email, user_title=request.user.title, user_image_url=request.user.user_image_url, answer_title=title, answer_content=explanation)
                 new_ans.save()
 
+
+
+                # updating number of answers of the  question:
+
+                question_ = post.objects.filter(post_id=post_id).first()
+                question_.answers += 1
+                question_.save()
+
                 return HttpResponseRedirect(request.path_info)
 
             
-            elif post_form_submit.split(',')[0] == "replying_to_answer" or post_form_submit.split(',')[0] == "replying_to_reply":
+            elif post_form_submit.split(',')[0] == "Reply To Answer" or post_form_submit.split(',')[0] == "Reply":
 
                 # saving reply:
 
                 reply_id = str(uuid.uuid4())
+
+                print(f'explanation : {explanation}')
 
                 new_reply = reply(reply_id=reply_id, replying_to=post_form_submit.split(',')[-1], post_id=post_id, answer_id=post_form_submit.split(',')[1], email=request.user.email, user_image_url=request.user.user_image_url, full_name=request.user.first_name + ' ' + request.user.last_name, reply_content=explanation)
                 new_reply.save()
@@ -400,8 +470,9 @@ def edit_post(request, post_id):
         post_content = post_data.post_content
         post_title = post_data.post_title
 
+        logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'edit_post.html', {'post_content': post_content, 'post_title': post_title})
+        return render(request, 'edit_post.html', {'post_content': post_content, 'post_title': post_title, 'logged_in': logged_in})
 
 
     elif request.method == 'POST':
@@ -435,7 +506,10 @@ def edit_answer(request, answer_id):
         answer_content = answer_.answer_content
         answer_title = answer_.answer_title
 
-        return render(request, 'edit_answer.html', {'answer_content': answer_content, 'answer_title': answer_title})
+        logged_in = request.user.is_authenticated or request.user.social_user
+
+
+        return render(request, 'edit_answer.html', {'answer_content': answer_content, 'answer_title': answer_title, 'logged_in': logged_in})
 
     
     elif request.method == 'POST':
@@ -465,7 +539,9 @@ def edit_reply(request, reply_id):
 
         content = reply_.reply_content
 
-        return render(request, 'edit_reply.html', {'reply_content': content})
+        logged_in = request.user.is_authenticated or request.user.social_user
+
+        return render(request, 'edit_reply.html', {'reply_content': content, 'logged_in': logged_in})
 
 
 
@@ -615,10 +691,57 @@ def my_posts(request):
 
         
         for item in qs:
-            context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"form/post/{item['post_id']}"})
+            context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"forum/post/{item['post_id']}"})
 
 
         no_of_posts = len(context)
-        logged_in = request.user.is_verified or request.user.social_user
+        logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'my_posts.html', {'context': context, 'no_of_posts': no_of_posts, 'logged_in': logged_in}) 
+        return render(request, 'my_posts.html', {'context': context, 'no_of_posts': no_of_posts, 'logged_in': logged_in})
+
+
+    elif request.method == 'POST':
+
+
+        # CHECKING IF POST FORM HAS BEEN FILLED:
+
+        title = request.POST.get('title', False)
+        explanation = request.POST.get('details', False)
+        post_form_submit = request.POST.get('post_question', False)
+
+        post_class = request.POST.get('post_class', False)
+        post_subject_or_course = request.POST.get('post_subject_or_course', False)
+
+
+        print(title, explanation, post_class, post_subject_or_course, post_form_submit)
+
+        filled_post_form = title != False and explanation  != False and post_form_submit != False
+
+        print(filled_post_form)
+
+        full_name = request.user.first_name + ' ' + request.user.last_name
+
+
+
+        if not filled_post_form:
+
+            return render(request, 'error_message.html', {'heading': 'An Unexpected Error Occured', 'message': 'Please try again later.'})
+
+        elif filled_post_form:
+
+            # if a question is posted:
+
+            if post_form_submit == "POST":
+
+                # saving post:
+
+                post_id = str(uuid.uuid4())
+
+                new_post = post(post_id=post_id, email=request.user.email, grade=post_class, subject=post_subject_or_course, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, user_title=request.user.title)
+                new_post.save()
+
+                return HttpResponseRedirect(f'/forum/post/{post_id}')
+
+        else:
+
+            return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again in a while'})

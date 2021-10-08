@@ -47,7 +47,7 @@ class profile(AbstractUser):
 
     username = None
 
-    user_image_url = models.TextField(default='https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')
+    user_image_url = models.TextField(default='https://aggred-pictures.s3.ap-south-1.amazonaws.com/profile-pictures/default_profile_image.png')
 
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=250)
@@ -56,6 +56,7 @@ class profile(AbstractUser):
     last_name = models.TextField(max_length=30)
     crowns = models.IntegerField(default=0)
     country = models.CharField(max_length=70)
+    category = models.CharField(max_length=25)
 
     start_date = models.DateTimeField(auto_now_add=True)
 

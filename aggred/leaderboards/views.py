@@ -46,5 +46,7 @@ def leaderboards(request, region):
         else:
             data_available = True
 
+        
+        logged_in = request.user.social_user or request.user.is_authenticated
 
-        return render(request, 'leaderboards.html', {'context': context, 'data_available': data_available, 'region': region})
+        return render(request, 'leaderboards.html', {'context': context, 'data_available': data_available, 'region': region, 'logged_in': logged_in})

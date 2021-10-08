@@ -230,3 +230,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# AWS CREDENTIALS
+
+AWS_ACCESS_KEY_ID = 'AKIA2R5CRTRWPRDEFFGH'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'aggred-pictures'
+# AWS_S3_CUSTOM_DOMAIN = AMAZON_CREDENTIAL['']
+# AWS_S3_FILE_OVERWRITE = True
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

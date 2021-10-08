@@ -18,29 +18,35 @@
 <!-- PROFILE PICTURE CHANGE  -->
 
 
-<div class="container">
+<div class="container" style="height: 30vh;">
     <div class="avatar-upload">
         <div class="avatar-edit">
-            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+            <input type='button' id="imageUpload" onclick="redirect_here('settings_/edit_profile_image');" />
             <label for="imageUpload"></label>
         </div>
         <div class="avatar-preview">
-            <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+            <div id="imagePreview" style="background-image: url('{{user_image_url}}');">
             </div>
         </div>
     </div>
 </div>
 
+<br><br>
+<br><br>
 
 <!-- SETTINGS OPTIONS  -->
 <div class="options-container">
     {% if social_user == 'False' %}
     <div class="op-1" onclick="redirect_here('settings_/change_email')">Change Email</div>
+    <hr>
     <div class="op-1" onclick="redirect_here('settings_/change_password')">Change Password</div>
-    {% endif %}
+    <hr> {% endif %}
     <div class="op-1" onclick="redirect_here('settings_/change_name')">Change Name</div>
+    <hr>
     <div class="op-1" onclick="redirect_here('settings_/change_title')">Change Profile Title</div>
+    <hr>
     <div class="op-1" id="delete-option" onclick="redirect_here('settings_/delete_confirmation')">Delete Account</div>
+    <hr>
 </div>
 
 <!-- firebase sdk  -->
@@ -89,6 +95,12 @@
         cursor: pointer;
         background-color: darkcyan;
         color: red;
+    }
+    
+    hr {
+        margin: 0px;
+        width: 20vw;
+        margin-left: 40vw;
     }
 </style>
 

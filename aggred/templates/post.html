@@ -12,7 +12,7 @@
 
 <!-- POPUP POST A QUESTION FORM  -->
 
-
+<!-- 
 <div class="content" id="popup_form">
 
     <div class="container">
@@ -34,44 +34,34 @@
                                 <label for="" class="col-form-label">Title *</label>
                                 <input type="text" class="form-control" name="title" id="name" placeholder="Your question...">
                             </div>
-                            <!-- <div class="col-md-6 form-group mb-3">
-                                <label for="" class="col-form-label">Email *</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
-                            </div> -->
                         </div>
 
-                        <!-- <div class="row">
                             <div class="col-md-12 form-group mb-3">
                                 <label for="budget" class="col-form-label">Subject</label>
                                 <input type="text" class="form-control" name="subject" id="subject" placeholder="Your subject">
                             </div>
                         </div> -->
 
-                        <div class="row mb-5">
-                            <div class="col-md-12 form-group mb-3">
-                                <label for="message" class="col-form-label" id="explanation"></label>
-                                <textarea class="form-control" name="details" id="explanation" cols="30" rows="4" placeholder="Write about the problem in detail."></textarea>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-5 form-group text-center">
-                                <input type="submit" name="submit_btn" class="btn btn-block btn-primary rounded-0 py-2 px-4" id="form-btn">
-                                <span class="submitting"></span>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- <div id="form-message-warning mt-4"></div> -->
-                    <!-- <div id="form-message-success">
-                        Your message was sent, thank you!
-                    </div> -->
-
-                </div>
-            </div>
-        </div>
+<!-- <div class="row mb-5" id="explanation_row">
+    <div class="col-md-12 form-group mb-3">
+        <label for="message" class="col-form-label" id="explanation"></label>
+        <textarea class="form-control" name="details" id="explanation" cols="30" rows="4" placeholder="Write about the problem in detail."></textarea>
     </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-5 form-group text-center">
+        <input type="submit" name="submit_btn" class="btn btn-block btn-primary rounded-0 py-2 px-4" id="form-btn">
+        <span class="submitting"></span>
+    </div>
+</div>
+</form>
 
 </div>
+</div>
+</div>
+</div>
+
+</div>  -->
 
 
 <!-- POPUP QUESTION FORM ENDS  -->
@@ -109,8 +99,8 @@
     <div class="card-header" id="likes-and-answers">
         <a>{{likes}} Likes</a>&nbsp;&nbsp;&nbsp;
         <a>{{answers}} Answers</a> {% if current_user != email %} {% if already_answered != 'True' %}
-        <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('answer');">Answer</button> {% else %}
-        <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" title="You have already answered this Question" disabled>Answer</button> {% endif %} {% else %}
+        <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Answer');">Answer</button> {% else %}
+        <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" title="You already answered" disabled>Answer</button> {% endif %} {% else %}
         <!-- <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" title="You have already answered this Question" disabled>Answer</button>  -->
         <div class="dropdown" style="float: right;">
             <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
@@ -173,7 +163,7 @@
             </div>
             <div class="card-header" id="likes-and-answers">
                 <a>{{answer.votes}} Votes</a>&nbsp;&nbsp;&nbsp; {% if current_user != answer.email %}
-                <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('replying_to_answer,{{answer.answer_id}},{{answer.full_name}}');">Reply</button> {% else %}
+                <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Reply To Answer,{{answer.answer_id}},{{answer.full_name}}');">Reply</button> {% else %}
                 <div class="dropdown" style="float: right;">
                     <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                       Actions
@@ -222,7 +212,7 @@
         </div>
         <div class="card-header" id="likes-and-answers">
             <a>{{reply.likes}} Likes</a>&nbsp;&nbsp;&nbsp; {% if current_user != reply.email %}
-            <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('replying_to_reply,{{answer.answer_id}},{{reply.full_name}}');">Reply</button> {% else %}
+            <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Reply,{{answer.answer_id}},{{reply.full_name}}');">Reply</button> {% else %}
             <div class="dropdown" style="float: right;">
                 <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                   Actions
@@ -253,8 +243,6 @@
 
 
 
-
-
 <style>
     #contactForm {
         width: 110%;
@@ -269,6 +257,10 @@
         bottom: 3vh;
         right: 3vw;
         border: none;
+    }
+    
+    option {
+        background-color: black;
     }
     
     img {
@@ -333,72 +325,12 @@
 </style>
 
 
+<script src="{% static 'js/post_form_script.js' %}"></script>
+
+<script src="{% static 'js/popup_submit.js' %}"></script>
+
 
 <script>
-    function close_footer() {
-        footer = document.getElementById('footer');
-
-        footer.style.display = 'none';
-    };
-
-    function popup_form(action) {
-        popup = document.getElementById('popup_form');
-        body_tag = document.getElementsByTagName('body')[0];
-
-        // body_tag.style.filter = "blur(8px)";
-
-
-        popup.style.display = 'block';
-        popup.style.backdropFilter = "blur(3px)";
-
-        // manipulating form field names as per the action:
-
-        form_heading = document.getElementById('form-heading');
-        form_title = document.getElementById('form-title');
-        explanation = document.getElementById('explanation');
-
-        form_submit = document.getElementById('form-btn');
-
-
-        if (action == 'ask') {
-            form_heading.innerText = 'Ask a Question';
-            form_title.style.display = 'block';
-            explanation.innerText = 'Explain *';
-            form_submit.value = "posting_question";
-
-        } else if (action == 'answer') {
-            form_heading.innerText = "Answer randomUser's question";
-            form_title.style.display = 'block';
-            explanation.innerText = 'Explain *';
-            form_submit.value = 'answering_question';
-
-        } else if (action.startsWith('replying_to_reply')) {
-
-            form_heading.innerText = "Replying to randomUser's Reply";
-            form_title.style.display = 'none';
-            explanation.innerText = 'Explain';
-            form_submit.value = action;
-
-        } else {
-            form_heading.innerText = "Reply to randomUser's answer";
-            form_title.style.display = 'none';
-            explanation.innerText = 'Explain *';
-            form_submit.value = action;
-
-        }
-    };
-
-    function close_popup(id_elem) {
-        popup = document.getElementById(id_elem);
-        popup.style.display = 'none';
-    }
-
-
-    function redirect_here(name) {
-        window.location.pathname = name;
-    };
-
-
     /* removing search section */
 
     search_section = document.getElementsByClassName('search-container')[0];

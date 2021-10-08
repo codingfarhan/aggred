@@ -206,120 +206,12 @@
 
 
 
-<script>
-    function redirect_here(name) {
-        window.location.pathname = name;
-    };
+<script src="{% static 'js/post_form_script.js' %}"></script>
 
-
-    /* removing search section */
-
-    search_section = document.getElementsByClassName('search-container')[0];
-
-    search_section.style.display = 'none';
-</script>
-
-
-
+<script src="{% static 'js/popup_submit.js' %}"></script>
 
 <script>
-    select_post1 = document.getElementById('post_class');
-    select_post2 = document.getElementById('post_subject_or_course');
-
-
-    for (var i = 1; i <= 12; i++) {
-
-        new_option = document.createElement('option');
-
-        option_value = `Class ${i}`;
-        new_option.value = option_value;
-        new_option.innerText = option_value;
-
-        select_post1.appendChild(new_option);
-    };
-
-
-    /* set value of next datalist element as: "Maths", "Science", etc */
-
-    subject_list = ['English', 'Hindi', 'Urdu', 'Sanskrit', 'Punjabi', 'Bengali', 'Tamil', 'Telugu', 'Sindhi', 'Marathi', 'Gujarati', 'Manipuri', 'Malayalam', 'Odia', 'Assamese', 'Kannada', 'Arabic', 'Tibetan', 'French', 'German', 'Russian', 'Persian', 'Nepali', 'Limboo', 'Lepcha', 'Telugu Telangana', 'BODO', 'Tangkhul', 'Japanese', 'Bhutia', 'Spanish', 'Kashmiri', 'Mizo', 'Bahasa Melayu', 'History', 'Political Science', 'Geography', 'Economics', 'Carnatic Music', 'Hindustani Music', 'Psychology', 'Sociology', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Biotechnology', 'Physical Education', 'Painting', 'Sculpture', 'Art', 'Business Studies', 'Accountancy', 'Dance', 'Home Science', 'Informatics Practices', 'Computer Science', 'Entrepreneurship', 'National Caded Corps (NCC)', 'Information Technology', 'Agriculture', 'Marketing', 'Yoga', 'Fashion', 'Artificial Intelligence', 'Media', 'Banking'];
-
-    for (subject in subject_list) {
-
-        new_option = document.createElement('option');
-
-        option_value = subject_list[subject];
-        new_option.value = option_value;
-        new_option.innerText = option_value;
-
-        select_post2.appendChild(new_option);
-
-    };
+    document.getElementsByClassName('search-container')[0].style.display = 'none';
 </script>
-
-
-
-
-<script>
-    function close_footer() {
-        footer = document.getElementById('footer');
-
-        footer.style.display = 'none';
-    };
-
-    function popup_form(action) {
-        popup = document.getElementById('popup_form');
-        body_tag = document.getElementsByTagName('body')[0];
-
-        // body_tag.style.filter = "blur(8px)";
-
-
-        popup.style.display = 'block';
-        popup.style.backdropFilter = "blur(3px)";
-
-        // manipulating form field names as per the action:
-
-        form_heading = document.getElementById('form-heading');
-        form_title = document.getElementById('form-title');
-        explanation = document.getElementById('explanation');
-
-        form_submit = document.getElementById('form-btn');
-
-
-        if (action == 'ask') {
-            form_heading.innerText = 'Ask a Question';
-            form_title.style.display = 'block';
-            explanation.innerText = 'Explain *';
-            form_submit.value = "posting_question";
-
-        } else if (action == 'answer') {
-            form_heading.innerText = "Answer randomUser's question";
-            form_title.style.display = 'block';
-            explanation.innerText = 'Explain *';
-            form_submit.value = 'answering_question';
-
-        } else if (action == 'reply') {
-            form_heading.innerText = "Reply to randomUser's answer";
-            form_title.style.display = 'none';
-            explanation.innerText = 'Explain *';
-            form_submit.value = "replying_to_answer";
-
-        }
-    };
-
-    function close_popup(id_elem) {
-
-        /* close the form */
-        popup = document.getElementById(id_elem);
-        popup.style.display = 'none';
-
-
-        document.getElementById('name').value = "";
-        document.getElementById('explanation_value').value = "";
-    }
-</script>
-
-
-
-
 
 {% endblock content %}
