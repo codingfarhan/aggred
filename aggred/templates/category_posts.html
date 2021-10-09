@@ -343,8 +343,17 @@
 
         if (!(education_level == "None" && search_query == "all")) {
             window.location.pathname = `forum/result/class_or_degree=${class_}/subject_or_field=${subject_or_course}/search=${search_query}`;
+        } else {
+            return false
         }
     };
+
+    document.getElementById('search_question_2').addEventListener("keyup", function(e) {
+
+        if (e.key == "Enter") {
+            show_results();
+        }
+    });
 </script>
 
 

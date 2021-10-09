@@ -12,6 +12,11 @@ from django.http import Http404, HttpResponseRedirect
 from profiles.models import profile
 
 
+# for advanced Search:
+from django.contrib.postgres.search import SearchQuery, SearchVector
+
+
+
 
 
 
@@ -184,16 +189,55 @@ def category_posts(request, class_, subject, search_query):
 
         if search_query == "all":
 
+            print('search = all')
             print('search query is ', search_query)
 
-            result_set = list(post.objects.filter(grade=class_, subject=subject).values())
+
+
+            if class_ != "None" and subject != "None":
+
+                result_set = list(post.objects.filter(grade=class_, subject=subject).values())
+
+            elif class_ == "None" and subject != "None":
+
+                result_set = list(post.objects.filter(subject=subject).values())
+
+            elif class_ != "None" and subject == "None":
+
+                result_set = list(post.objects.filter(grade=class_).values())
+
+            else:
+
+                result_set = list(post.objects.all().values())
+
 
         
         elif search_query != "all":
 
+            print('search != all')
+
             print('search query is ', search_query)
 
-            result_set = list(post.objects.filter(grade=class_, subject=subject, post_title__icontains=search_query).values())
+
+            vector = SearchVector('post_title', 'post_content')
+            query = SearchQuery(search_query)
+
+
+            if class_ != "None" and subject != "None":
+
+                result_set = list(post.objects.annotate(search=vector).filter(grade=class_, subject=subject, search=query).values())
+
+            elif class_ == "None" and subject != "None":
+
+                result_set = list(post.objects.annotate(search=vector).filter(subject=subject, search=query).values())
+
+            elif class_ != "None" and subject == "None":
+
+                result_set = list(post.objects.annotate(search=vector).filter(grade=class_, search=query).values())
+
+            else:
+
+                result_set = list(post.objects.annotate(search=vector).filter(search=query).values())
 
 
 

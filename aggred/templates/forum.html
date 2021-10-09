@@ -308,6 +308,14 @@
             window.location.pathname = `forum/result/class_or_degree=${class_}/subject_or_field=${subject_or_course}/search=${search_query}`;
         }
     };
+
+
+    document.getElementById('search_question').addEventListener("keyup", function(e) {
+
+        if (e.key == "Enter") {
+            show_results();
+        }
+    });
 </script>
 
 
