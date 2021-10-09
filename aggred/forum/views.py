@@ -181,68 +181,37 @@ def category_posts(request, class_, subject, search_query):
         no_results = 'False'
 
 
-        # if search_query != " " and education_level == None:
-
-        #     print('search query is ', search_query)
-
-        #     result_set = json.dumps(list(post.objects.filter(post_title=search_query).values()), default=myconverter)
-
-        # elif  search_query == " " and education_level != None:
-            
-        #     # Here, education_level != "None" means that the user has selected School Level (Since it is the only option) so in this case we will only show results for school level questions
-
-        #     if class_ == None and subject_or_course == None:
-
-        #         print('search query is ', search_query)
-
-        #         result_set = json.dumps(list(post.objects.filter(grade__icontains="Class ").values()), default=myconverter)
-
-        #     elif class_ != None and subject_or_course == None:
-
-        #         print('search query is ', search_query)
-
-        #         result_set = json.dumps(list(post.objects.filter(grade=class_).values()), default=myconverter)
-
-        #     elif class_ != None and subject_or_course != None:
-
-        #         print('search query is ', search_query)
-
-        #         result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject_or_course).values()), default=myconverter)
-
 
         if search_query == "all":
 
             print('search query is ', search_query)
 
-            result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject).values()), default=myconverter)
+            result_set = list(post.objects.filter(grade=class_, subject=subject).values())
 
         
         elif search_query != "all":
 
             print('search query is ', search_query)
 
-            result_set = json.dumps(list(post.objects.filter(grade=class_, subject=subject, post_title__icontains=search_query).values()), default=myconverter)
+            result_set = list(post.objects.filter(grade=class_, subject=subject, post_title__icontains=search_query).values())
 
 
 
 
         context = []
 
-        qs = json.loads(result_set)
-        print(qs)
+        # qs = json.loads(result_set)
+        # print(qs)
 
 
-        if result_set == '' or len(qs) == 0 or qs[0] == None:
-            qs = []
+        if result_set != [] and len(result_set) != 0 and result_set[0] != None:
 
-        else:
-
-            for item in qs:
+            for item in result_set:
                 context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"forum/post/{item['post_id']}"})
 
 
 
-        if result_set != '' and len(context) == 0:
+        if result_set == [] and len(context) == 0:
             no_results = 'True'
 
         
@@ -316,6 +285,8 @@ def post_id(request, post_id):
 
         post_data = post().__class__.objects.filter(post_id=post_id).first()
 
+        print(f'here is the question: {post_data}')
+
         if post_data is None:
 
             raise Http404("Post does not exist. Are you sure the URL is correct?")
@@ -348,16 +319,18 @@ def post_id(request, post_id):
 
             # sending answer data (if any):
 
-            answers_data = json.dumps(list(answer.objects.filter(post_id=post_id).values()), default=myconverter)
+            answers_data = list(answer.objects.filter(post_id=post_id).values())
 
-            if answers_data != '':
+            print(f' here are the answers: {answer.objects.filter(post_id=post_id).values()}')
 
-                qs = json.loads(answers_data)
+            if answers_data != []:
 
-                print(qs)
+                # qs = json.loads(answers_data)
+
+                # print(qs)
                 answers_exist = 'True'
 
-                for item in qs:
+                for item in answers_data:
 
                     answers_list.append({'full_name': item['full_name'], 'email': item['email'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'user_title': item['user_title'], 'answer_title': item['answer_title'], 'answer_content': item['answer_content'], 'time_stamp': item['timestamp'], 'votes': item['votes']})
 
@@ -371,17 +344,17 @@ def post_id(request, post_id):
             # sending replies data (if any):
 
 
-            replies_data = json.dumps(list(reply.objects.filter(post_id=post_id).values()), default=myconverter)
+            replies_data = list(reply.objects.filter(post_id=post_id).values())
 
 
-            if replies_data != '':
+            if replies_data != []:
 
-                qs = json.loads(replies_data)
+                # qs = json.loads(replies_data)
 
-                print(qs)
+                # print(qs)
                 replies_exist = 'True'
 
-                for item in qs:
+                for item in replies_data:
 
                     replies_list.append({'full_name': item['full_name'], 'reply_id': item['reply_id'], 'email': item['email'], 'replying_to': item['replying_to'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'reply_content': item['reply_content'], 'time_stamp': item['reply_date']})
 
@@ -717,18 +690,17 @@ def my_posts(request):
 
         user_email = request.user.email
 
-        posts = json.dumps(list(post.objects.filter(email=user_email).values()), default=myconverter)
-
-
-        if posts != '':
-            qs = json.loads(posts)
+        posts = list(post.objects.filter(email=user_email).values())
 
 
         context = []
 
-        
-        for item in qs:
-            context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"forum/post/{item['post_id']}"})
+
+        if posts != []:
+            # qs = json.loads(posts)
+
+            for item in posts:
+                context.append({'post_id': item['post_id'], 'email': item['email'], 'user_image_url': item['user_image_url'], 'full_name': item['full_name'], 'user_title': item['user_title'], 'post_title': item['post_title'], 'post_content': item['post_content'], 'likes': item['likes'], 'post_date': item['post_date'], 'answers': item['answers'], 'redirect_url': f"forum/post/{item['post_id']}"})
 
 
         no_of_posts = len(context)
