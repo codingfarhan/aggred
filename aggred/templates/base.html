@@ -156,17 +156,17 @@
 
         <div class="title mb-5"> <b><h3 id="form-heading"></h3></b></div>
 
-        <form method="POST" class="text-center container col-md-6 col-md-offset-6">
+        <form method="POST" class="text-center container col-md-6 col-md-offset-6" onsubmit="return validateForm()">
             {% csrf_token %}
 
             <div class="form-group text-center row mb-5" id="title_row">
                 <label for="exampleFormControlTextarea1" id="form-title">Title *</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="title" id="name" placeholder="Your question..."></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="title" id="name" placeholder="Your question..." maxlength="130" required></textarea>
             </div>
 
             <div class="form-group text-center row mb-5">
                 <label for="exampleFormControlTextarea1" id="explanation"></label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="details" id="explanation_value" cols="30" placeholder="Write about the problem in detail."></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea2" rows="4" name="details" id="explanation_value" cols="30" placeholder="Write about the problem in detail." maxlength="1000" required></textarea>
             </div>
 
             <div class="category-options container" style="height: 19vh;">
@@ -183,6 +183,13 @@
                 <option value="None">Choose Subject</option>
                 </select>
 
+            </div>
+
+            <div id="error-msgs">
+                <small id="empty_title_value">You can't leave the Title field empty.</small>
+                <small id="empty_explanation_value">You can't leave the Explanation field empty.</small>
+                <small id="title_exceeds_character_limit">The Title cannot be more than 40 characters long.</small>
+                <small id="explanation_exceeds_character_limit">The Explanation field cannot be more than 200 characters long.</small>
             </div>
             <div class="container">
                 <button type="submit" name="post_question" class="btn btn-block btn-primary rounded-0 py-2 px-8" id="form-btn" style="margin: 0px; padding: 0px;"></button>
@@ -290,6 +297,11 @@
             background-color: darkcyan;
         }
         
+        small {
+            display: none;
+            color: red;
+        }
+        
         @media all and (max-width: 600px) {
             #leaderboards {
                 display: none;
@@ -319,7 +331,6 @@
             window.location.pathname = name;
         };
     </script>
-
 
 
 </body>
