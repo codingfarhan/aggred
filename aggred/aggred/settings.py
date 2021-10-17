@@ -166,20 +166,16 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ['redis://:pea10a89cb354493a340c0f9c9f54017444709d9633d9dc5c0635bcb79d6a0141@ec2-3-226-187-249.compute-1.amazonaws.com:12860'],
+            "hosts": [os.environ.get('REDIS_URL')],
         },
     },
 }
-
-# REDIS URI : redis://DBxpP3Sypaa46ePqxWRDqZwj1TKWhSLT@redis-19988.c264.ap-south-1-1.ec2.cloud.redislabs.com:19988
-
-
-# redis_url = urlparse('redis://redistogo:7199a2f57ce91e007617748c08413b4a@sole.redistogo.com:9967/')
+print(os.environ.get('REDIS_URL'))
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": 'redis://:pea10a89cb354493a340c0f9c9f54017444709d9633d9dc5c0635bcb79d6a0141@ec2-3-226-187-249.compute-1.amazonaws.com:12860',
+        "LOCATION": os.environ.get('REDIS_URL'),
         # "LOCATION": '%s:%s' % (redis_url.hostname, redis_url.port),
         "OPTIONS": {
             # "PASSWORD": redis_url.password,
