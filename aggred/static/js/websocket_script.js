@@ -96,6 +96,10 @@ window.onload = function() {
             "/"
         );
 
+        if (ws.readyState == 0) {
+            console.log("COnnecting to Websockets...");
+        }
+
         if (ws.readyState == 1) {
             console.log("WEBSOCKET CONNECTED!!");
 
@@ -159,6 +163,14 @@ window.onload = function() {
                     dom_manipulation(unsave_icon);
                 }
             };
+        }
+
+        if (ws.readyState == 2) {
+            console.log("WS connection closing..");
+        }
+
+        if (ws.readyState == 3) {
+            console.log("WS connection closed..");
         }
     }
 };
