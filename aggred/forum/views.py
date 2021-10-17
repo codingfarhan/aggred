@@ -9,7 +9,7 @@ import uuid
 import json
 import datetime
 from django.http import Http404, HttpResponseRedirect
-from profiles.models import profile
+from profiles.models import profile, save_post
 
 
 # for advanced Search:
@@ -356,6 +356,9 @@ def post_id(request, post_id):
 
             email = post_data.email
 
+            liked = post_id in request.user.liked_posts
+            saved = save_post.objects.filter(email=request.user.email, post_id=post_id).exists()
+
 
             answers_list = []
             replies_list = []
@@ -408,10 +411,10 @@ def post_id(request, post_id):
                 replies_exist = 'False'
 
             logged_in = request.user.is_authenticated or request.user.social_user
-            
 
 
-            return render(request, 'post.html', {'current_user': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in})
+
+            return render(request, 'post.html', {'liked': liked, 'saved': saved, 'userEmail': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in})
 
 
     elif request.method == 'POST':

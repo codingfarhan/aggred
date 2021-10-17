@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+from urllib.parse import urlparse
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,6 +51,8 @@ INSTALLED_APPS = [
 
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
+
+    'channels'
 ]
 
 
@@ -135,7 +139,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'aggred.wsgi.application'
-
+ASGI_APPLICATION = 'aggred.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -154,6 +158,37 @@ DATABASES = {
         # 'HOST': 'localhost',
         'HOST': 'ec2-3-226-134-153.compute-1.amazonaws.com',
         'PORT': '5432'
+    }
+}
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://:pea10a89cb354493a340c0f9c9f54017444709d9633d9dc5c0635bcb79d6a0141@ec2-3-226-187-249.compute-1.amazonaws.com:12860'],
+        },
+    },
+}
+
+# REDIS URI : redis://DBxpP3Sypaa46ePqxWRDqZwj1TKWhSLT@redis-19988.c264.ap-south-1-1.ec2.cloud.redislabs.com:19988
+
+
+# redis_url = urlparse('redis://redistogo:7199a2f57ce91e007617748c08413b4a@sole.redistogo.com:9967/')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": 'redis://:pea10a89cb354493a340c0f9c9f54017444709d9633d9dc5c0635bcb79d6a0141@ec2-3-226-187-249.compute-1.amazonaws.com:12860',
+        # "LOCATION": '%s:%s' % (redis_url.hostname, redis_url.port),
+        "OPTIONS": {
+            # "PASSWORD": redis_url.password,
+            # 'DB':0,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "ssl_cert_reqs": None
+            },
+        }
     }
 }
 
