@@ -14,11 +14,6 @@ from pathlib import Path
 import os
 
 from urllib.parse import urlparse
-import django
-
-
-
-django.setup()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,9 +34,9 @@ ALLOWED_HOSTS = ['aggred.herokuapp.com', 'localhost', 'aggred.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'forum',
-    'profiles',
-    'leaderboards',
+    'forum.apps.ForumConfig',
+    'profiles.apps.ProfilesConfig',
+    'leaderboards.apps.LeaderboardsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

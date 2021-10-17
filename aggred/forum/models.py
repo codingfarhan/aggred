@@ -31,6 +31,8 @@ class post(models.Model):
 
 
 
+
+
 class answer(models.Model):
 
     post_id = models.TextField(default='')
@@ -53,6 +55,8 @@ class answer(models.Model):
 
     # answers will be arranged according to number of 'useful's 
     votes = models.IntegerField(default=0)
+
+
 
 
 
