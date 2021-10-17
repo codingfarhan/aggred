@@ -89,7 +89,11 @@ window.onload = function() {
         // Establishing Websocket Connection first:
 
         var ws = new WebSocket(
-            "ws://" + window.location.host + "/ws/interact_with_post/" + post_id + "/"
+            "wss://" +
+            window.location.host +
+            "/ws/interact_with_post/" +
+            post_id +
+            "/"
         );
 
         if (ws.readyState == 1) {
