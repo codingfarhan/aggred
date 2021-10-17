@@ -98,67 +98,67 @@ window.onload = function() {
 
         if (ws.readyState == 1) {
             console.log("WEBSOCKET CONNECTED!!");
-        }
 
-        // if liking a post:
+            // if liking a post:
 
-        if (element_id == like_icon) {
-            ws.send(
-                JSON.stringify({
-                    userEmail: userEmail,
-                    post_id: post_id,
-                    action: "like",
-                })
-            );
-        }
-
-        // if disliking a post:
-        else if (element_id == dislike_icon) {
-            ws.send(
-                JSON.stringify({
-                    userEmail: userEmail,
-                    post_id: post_id,
-                    action: "dislike",
-                })
-            );
-        }
-
-        // if saving a post:
-        else if (element_id == save_icon) {
-            ws.send(
-                JSON.stringify({
-                    userEmail: userEmail,
-                    post_id: post_id,
-                    action: "save",
-                })
-            );
-        }
-
-        // if unsaving a post:
-        else if (element_id == unsave_icon) {
-            ws.send(
-                JSON.stringify({
-                    userEmail: userEmail,
-                    post_id: post_id,
-                    action: "unsave",
-                })
-            );
-        }
-
-        ws.onmessage = function(e) {
-            received_data = JSON.parse(e.data);
-
-            console.log(received_data["message"]);
-
-            if (received_data["action"] == "like") {
-                dom_manipulation(like_icon);
-            } else if (received_data["action"] == "dislike") {
-                dom_manipulation(dislike_icon);
-            } else if (received_data["action"] == "save") {
-                dom_manipulation(save_icon);
-            } else if (received_data["action"] == "unsave") {
-                dom_manipulation(unsave_icon);
+            if (element_id == like_icon) {
+                ws.send(
+                    JSON.stringify({
+                        userEmail: userEmail,
+                        post_id: post_id,
+                        action: "like",
+                    })
+                );
             }
-        };
+
+            // if disliking a post:
+            else if (element_id == dislike_icon) {
+                ws.send(
+                    JSON.stringify({
+                        userEmail: userEmail,
+                        post_id: post_id,
+                        action: "dislike",
+                    })
+                );
+            }
+
+            // if saving a post:
+            else if (element_id == save_icon) {
+                ws.send(
+                    JSON.stringify({
+                        userEmail: userEmail,
+                        post_id: post_id,
+                        action: "save",
+                    })
+                );
+            }
+
+            // if unsaving a post:
+            else if (element_id == unsave_icon) {
+                ws.send(
+                    JSON.stringify({
+                        userEmail: userEmail,
+                        post_id: post_id,
+                        action: "unsave",
+                    })
+                );
+            }
+
+            ws.onmessage = function(e) {
+                received_data = JSON.parse(e.data);
+
+                console.log(received_data["message"]);
+
+                if (received_data["action"] == "like") {
+                    dom_manipulation(like_icon);
+                } else if (received_data["action"] == "dislike") {
+                    dom_manipulation(dislike_icon);
+                } else if (received_data["action"] == "save") {
+                    dom_manipulation(save_icon);
+                } else if (received_data["action"] == "unsave") {
+                    dom_manipulation(unsave_icon);
+                }
+            };
+        }
     }
 };
