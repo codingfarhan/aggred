@@ -68,6 +68,7 @@ class profile(AbstractUser):
 
 
     liked_posts = models.TextField(default='')
+    voted_answers = models.TextField(default='')
 
 
     USERNAME_FIELD = 'email'

@@ -35,8 +35,8 @@
         </div>
     </div>
     <div class="card-header" id="likes-and-answers">
-        <a>{{likes}} Likes</a>&nbsp;&nbsp;&nbsp;
-        <a>{{answers}} Answers</a> {% if current_user != email %} {% if already_answered != 'True' %}
+        <a id="likes-{{post_id}}">{{likes}} Likes</a>&nbsp;&nbsp;&nbsp;
+        <a>{{answers}} Answers</a> {% if userEmail != email %} {% if already_answered != 'True' %}
         <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Answer');">Answer</button> {% else %}
         <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" title="You already answered" disabled>Answer</button> {% endif %} {% else %}
         <!-- <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" title="You have already answered this Question" disabled>Answer</button>  -->
@@ -52,22 +52,24 @@
         {% endif %} {% if logged_in %}
 
         <!-- LIKE ICONS  -->
-        <a style="float: right;" id="like-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <a style="float: right;" id="save-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2" />
       </svg></a>
-        <a style="float: right;" id="dislike-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-      </svg></a>
 
-        <!-- SAVED ICONS  -->
-        <a style="float: right;" id="save-icon"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-      </svg></a>
         <a style="float: right;" id="unsave-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-off" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <line x1="3" y1="3" x2="21" y2="21" />
         <path d="M17 17v3l-5 -3l-5 3v-13m1.178 -2.818c.252 -.113 .53 -.176 .822 -.176h6a2 2 0 0 1 2 2v7" />
+      </svg></a>
+
+        <!-- SAVED ICONS  -->
+        <a style="float: right;" id="like-icon"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+      </svg></a>
+
+        <a style="float: right;" id="dislike-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
       </svg></a> {% endif %}
 
 
@@ -99,8 +101,13 @@
                 </div>
             </div>
             <div class="card-header" id="likes-and-answers">
-                <a>{{answer.votes}} Votes</a>&nbsp;&nbsp;&nbsp; {% if current_user != answer.email %}
-                <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Reply To Answer,{{answer.answer_id}},{{answer.full_name}}');">Reply</button> {% else %}
+                <a id="votes-{{answer.answer_id}}">{{answer.votes}} Votes</a>&nbsp;&nbsp;&nbsp; {% if userEmail != answer.email %}
+                <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Reply To Answer,{{answer.answer_id}},{{answer.full_name}}');">Reply</button> {% if not answer.voted %}
+                <button class="btn btn-success btn-sm" style="float: right; margin-right: 0.5%;" id="vote/{{answer.answer_id}}" onclick="voteFunction('vote/{{answer.answer_id}}');">Vote</button> {% else %}
+                <button class="btn btn-danger btn-sm" style="float: right; margin-right: 0.5%;" id="undovote/{{answer.answer_id}}" onclick="voteFunction('undovote/{{answer.answer_id}}');">Undo Vote</button> {% endif %}
+
+                <button class="btn btn-danger btn-sm undovote" style="float: right; margin-right: 0.5%;" id="undovote/{{answer.answer_id}}" onclick="voteFunction('undovote/{{answer.answer_id}}');">Undo Vote</button>
+                <button class="btn btn-success btn-sm vote" style="float: right; margin-right: 0.5%;" id="vote/{{answer.answer_id}}" onclick="voteFunction('vote/{{answer.answer_id}}');">Vote</button> {% else %}
                 <div class="dropdown" style="float: right;">
                     <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                       Actions
@@ -111,10 +118,6 @@
                     </ul>
                 </div>
                 {% endif %}
-                <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-              </svg> &nbsp;</a>
-
                 <!-- INCASE THE POST HAS ALREADY BEEN LIKED  -->
 
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -148,7 +151,7 @@
             </div>
         </div>
         <div class="card-header" id="likes-and-answers">
-            <a>{{reply.likes}} Likes</a>&nbsp;&nbsp;&nbsp; {% if current_user != reply.email %}
+            <a>{{reply.likes}} Likes</a>&nbsp;&nbsp;&nbsp; {% if userEmail != reply.email %}
             <button class="btn btn-primary btn-sm" style="float: right; top: -100%;" onclick="popup_form('Reply,{{answer.answer_id}},{{reply.full_name}}');">Reply</button> {% else %}
             <div class="dropdown" style="float: right;">
                 <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
@@ -160,10 +163,6 @@
                 </ul>
             </div>
             {% endif %}
-            <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-          </svg> &nbsp;</a>
-
             <!-- INCASE THE POST HAS ALREADY BEEN LIKED  -->
 
             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -176,9 +175,6 @@
     {% endif %} {% endfor %} {% endfor %} {% endif %}
 </div>
 
-<script src="{% static 'js/websocket_script.js' %}"></script>
-
-{{ post_id|json_script:'post_id' }} {{ userEmail|json_script:'userEmail' }} {{ liked|json_script:'liked' }} {{ saved|json_script:'saved' }}
 
 <style>
     #contactForm {
@@ -287,12 +283,96 @@
 <script src="{% static 'js/popup_submit.js' %}"></script>
 
 
+{% csrf_token %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="{% static 'js/ajax_script.js' %}"></script>
+
+{{ post_id|json_script:'post_id' }} {{ userEmail|json_script:'userEmail' }} {{ liked|json_script:'liked' }} {{ saved|json_script:'saved' }}
+
+
 <script>
     /* removing search section */
 
     search_section = document.getElementsByClassName('search-container')[0];
 
     search_section.style.display = 'none';
+
+
+    // removing temporary vote/undovote buttons:
+
+    document.getElementsByClassName('vote')[0].style.display = 'none';
+    document.getElementsByClassName('undovote')[0].style.display = 'none';
+
+    // Function dealing with vote/undo vote features:
+
+    function voteFunction(action_and_answerID) {
+        action = action_and_answerID.split("/")[0];
+        answerID = action_and_answerID.split("/")[1];
+
+        // connecting to backend with ajax
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", `/ajax/like_save_vote/`, true);
+
+        csrftoken = document.cookie.split(";")[2].split("=")[1];
+
+        // console.log(csrftoken);
+
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+        if (xhr.readyState == 0) {
+            console.log("COnnecting to url...");
+        }
+
+        if (xhr.readyState == 1) {
+            console.log("CONNECTED!!");
+
+            xhr.send(
+                JSON.stringify({
+                    userEmail: userEmail,
+                    post_id: answerID,
+                    action: action,
+                })
+            );
+
+            // DOM manipulation for voting:
+
+            if (action == "vote") {
+                // removing the clicked button:
+                document.getElementById(action_and_answerID).style.display = 'none';
+
+                document.getElementsByClassName('undovote')[0].style.display = 'block';
+
+                // changing the number of votes in real-time:
+
+                target_elem = document.getElementById(`votes-${answerID}`);
+                current_votes = parseInt(target_elem.textContent);
+
+                current_votes += 1;
+
+                target_elem.textContent = `${current_votes} Votes`;
+            } else if (action == "undovote") {
+                // removing the clicked button:
+                document.getElementById(action_and_answerID).style.display = 'none';
+
+                document.getElementsByClassName('vote')[0].style.display = 'block';
+
+                // changing the number of votes in real-time:
+
+                target_elem = document.getElementById(`votes-${answerID}`);
+                current_votes = parseInt(target_elem.textContent);
+
+                current_votes -= 1;
+
+                target_elem.textContent = `${current_votes} Votes`;
+            }
+        }
+
+
+    }
 </script>
 
 

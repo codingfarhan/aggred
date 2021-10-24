@@ -39,7 +39,7 @@ class answer(models.Model):
 
     answer_id = models.TextField(unique=True)
 
-    email = models.CharField(max_length=30, unique=True, default='')
+    email = models.CharField(max_length=30, default='')
 
     full_name = models.CharField(max_length=30)
 
@@ -53,7 +53,7 @@ class answer(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    # answers will be arranged according to number of 'useful's 
+    # answers will be arranged according to number of votes
     votes = models.IntegerField(default=0)
 
 

@@ -10,6 +10,7 @@ urlpatterns = [
     
     path('forum/post/<post_id>', views.post_id, name='post_id'),
 
+    path('ajax/like_save_vote/', views.like_save_vote, name='like_save_vote'),
 
     path('forum/delete/post/<post_id>', views.delete_post, name='delete_post'),
     path('forum/delete/answer/<answer_id>', views.delete_answer, name='delete_answer'),

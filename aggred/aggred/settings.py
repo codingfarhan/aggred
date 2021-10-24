@@ -14,6 +14,14 @@ from pathlib import Path
 import os
 
 from urllib.parse import urlparse
+import redis 
+
+
+
+redis_url = os.environ.get('REDIS_URL')
+redis_store = redis.from_url(redis_url, ssl_cert_reqs=None)
+
+print(redis_store)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +36,7 @@ SECRET_KEY = 'django-insecure-ak8hr0@z4jns6q+=6f_6p5zj388nx4$si9!b6*e-fzcs^b+id1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['aggred.herokuapp.com', 'localhost', 'aggred.com']
+ALLOWED_HOSTS = ['aggred.herokuapp.com', 'localhost', 'aggred.com', '127.0.0.1']
 
 
 # Application definition
@@ -166,7 +174,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL')],
+            # "hosts": [redis_url],
+            "hosts": ['redis://127.0.0.1:6379'],
         },
     },
 }
@@ -175,16 +184,17 @@ print(os.environ.get('REDIS_URL'))
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL'),
+        # "LOCATION": redis_url,
+        "LOCATION": 'redis://127.0.0.1:6379',
         # "LOCATION": '%s:%s' % (redis_url.hostname, redis_url.port),
-        "OPTIONS": {
-            # "PASSWORD": redis_url.password,
-            # 'DB':0,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "CONNECTION_POOL_KWARGS": {
-                "ssl_cert_reqs": None
-            },
-        }
+        # "OPTIONS": {
+        #     # "PASSWORD": redis_url.password,
+        #     # 'DB':0,
+        #     "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        #     "CONNECTION_POOL_KWARGS": {
+        #         "ssl_cert_reqs": None
+        #     },
+        # }
     }
 }
 

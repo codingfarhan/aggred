@@ -10,6 +10,8 @@ import json
 import datetime
 from django.http import Http404, HttpResponseRedirect
 from profiles.models import profile, save_post
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 # for advanced Search:
@@ -55,6 +57,154 @@ def get_feedback(name, email, message):
         email_from,
         [f'{settings.EMAIL_HOST_USER}'],
         fail_silently = False)
+
+
+
+
+
+# Saving Data from AJAX request:
+
+def save_data(userEmail, post_id, action, request):
+
+
+    if action == 'like':
+
+        # Updating number of liked on the post:
+
+        post_object = post.objects.filter(post_id=post_id).first()
+        post_object.likes += 1
+        post_object.save()
+
+        
+        #Updating the user's field of liked posts:
+
+        user_object = profile.objects.filter(email=userEmail).first()
+
+
+        if len(user_object.liked_posts) == 0:
+
+            user_object.liked_posts = post_id
+            user_object.save()
+
+        else:
+
+            user_object.liked_posts += ',' + post_id
+            user_object.save()
+
+
+    elif action == 'dislike':
+
+        # Updating number of liked on the post:
+
+        post_object = post.objects.filter(post_id=post_id).first()
+        post_object.likes -= 1
+        post_object.save()
+
+
+        #Updating the user's field of liked posts:
+
+        user_object = profile.objects.filter(email=userEmail).first()
+
+
+        if ',' not in user_object.liked_posts and user_object.liked_posts != '':
+
+            user_object.liked_posts = user_object.liked_posts.replace(post_id, '')
+            print('post disliked updated the users profile table.')
+
+        elif ',' in user_object.liked_posts and user_object.liked_posts.split(',')[0] == post_id:
+
+            user_object.liked_posts = user_object.liked_posts.replace(f'{post_id},', '')
+            print('post disliked updated the users profile table.')
+
+        else:
+
+            user_object.liked_posts = user_object.liked_posts.replace(f',{post_id}', '')
+            print('post disliked updated the users profile table.')
+
+        
+        user_object.save()
+
+    
+    elif action == 'save':
+
+
+        #Adding saved post to the saved posts table:
+
+        save_post_object = save_post(email=userEmail, post_id=post_id)
+        save_post_object.save()
+
+
+    elif action == 'unsave':
+
+
+        #Removing saved post from the saved posts table:
+
+        save_post_object = save_post.objects.filter(email=userEmail, post_id=post_id).first()
+        save_post_object.delete()
+
+
+    elif action == 'vote':
+
+        # adding a vote to the post:
+
+        answer_ = answer.objects.filter(answer_id=post_id).first()
+
+        answer_.votes += 1
+        answer_.save()
+
+
+        # adding answer_id to the profile's voted_answers field:
+
+        user_object = profile.objects.filter(email=request.user.email).first()
+
+        if len(user_object.voted_answers) == 0:
+
+            user_object.voted_answers = post_id
+            user_object.save()
+
+        else:
+
+            user_object.voted_answers += f',{post_id}'
+            user_object.save()
+
+        
+        user_object.save()
+
+    
+    elif action == 'undovote':
+
+        # removing vote from the answer:
+
+        answer_ = answer.objects.filter(answer_id=post_id).first()
+
+        answer_.votes -= 1
+        answer_.save()
+
+
+        #Updating the user's field of liked posts:
+
+        user_object = profile.objects.filter(email=userEmail).first()
+
+
+        if ',' not in user_object.voted_answers and user_object.voted_answers != '':
+
+            user_object.voted_answers = user_object.voted_answers.replace(post_id, '')
+            print('answer undovote updated the users profile table. 1')
+
+        elif ',' in user_object.voted_answers and user_object.voted_answers.split(',')[0] == post_id:
+
+            user_object.voted_answers = user_object.voted_answers.replace(f'{post_id},', '')
+            print('answer undovote updated the users profile table. 2')
+
+        else:
+
+            user_object.voted_answers = user_object.voted_answers.replace(f',{post_id}', '')
+            print('answer undovote updated the users profile table. 3')
+
+        
+        user_object.save()
+
+
 
 
 
@@ -379,7 +529,14 @@ def post_id(request, post_id):
 
                 for item in answers_data:
 
-                    answers_list.append({'full_name': item['full_name'], 'email': item['email'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'user_title': item['user_title'], 'answer_title': item['answer_title'], 'answer_content': item['answer_content'], 'time_stamp': item['timestamp'], 'votes': item['votes']})
+                    if item['answer_id'] in request.user.voted_answers:
+                        voted = True
+                    else:
+                        voted = False
+
+                    print(f'voted: {voted}')
+
+                    answers_list.append({'voted': voted,'full_name': item['full_name'], 'email': item['email'], 'answer_id': item['answer_id'], 'image': item['user_image_url'], 'user_title': item['user_title'], 'answer_title': item['answer_title'], 'answer_content': item['answer_content'], 'time_stamp': item['timestamp'], 'votes': item['votes']})
 
 
             else:
@@ -412,6 +569,8 @@ def post_id(request, post_id):
 
             logged_in = request.user.is_authenticated or request.user.social_user
 
+            
+            print(f'liked: {liked}, saved: {saved}')
 
 
             return render(request, 'post.html', {'liked': liked, 'saved': saved, 'userEmail': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in})
@@ -673,6 +832,7 @@ def delete_post(request, post_id):
 def delete_answer(request, answer_id):
 
     answer_ = answer.objects.filter(answer_id=answer_id).first()
+    post_object = post.objects.filter(post_id=answer_.post_id).first()
 
     
     if request.method == 'GET':
@@ -685,6 +845,9 @@ def delete_answer(request, answer_id):
     elif request.method == 'POST':
 
         answer_.delete()
+
+        post_object.answers -= 1
+        post_object.save()
 
         return render(request, 'message_screen.html', {'heading': 'Delete Successful', 'message': 'Your answer was successfully deleted.'})
 
@@ -801,3 +964,24 @@ def my_posts(request):
         else:
 
             return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again in a while'})
+
+
+
+@csrf_exempt
+def like_save_vote(request):
+
+    if request.method == 'POST':
+
+        received_data = json.load(request)
+
+        userEmail = received_data['userEmail']
+        post_id = received_data['post_id']
+        action = received_data['action']
+
+        save_data(userEmail, post_id, action, request)
+
+
+        print(userEmail, post_id, action)
+        print('AJAX Data saved in the Database.')
+
+        return JsonResponse({'message': f'successfully performed {action}'})
