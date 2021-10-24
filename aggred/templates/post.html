@@ -106,8 +106,8 @@
                 <button class="btn btn-success btn-sm" style="float: right; margin-right: 0.5%;" id="vote/{{answer.answer_id}}" onclick="voteFunction('vote/{{answer.answer_id}}');">Vote</button> {% else %}
                 <button class="btn btn-danger btn-sm" style="float: right; margin-right: 0.5%;" id="undovote/{{answer.answer_id}}" onclick="voteFunction('undovote/{{answer.answer_id}}');">Undo Vote</button> {% endif %}
 
-                <button class="btn btn-danger btn-sm undovote" style="float: right; margin-right: 0.5%;" id="undovote/{{answer.answer_id}}" onclick="voteFunction('undovote/{{answer.answer_id}}');">Undo Vote</button>
-                <button class="btn btn-success btn-sm vote" style="float: right; margin-right: 0.5%;" id="vote/{{answer.answer_id}}" onclick="voteFunction('vote/{{answer.answer_id}}');">Vote</button> {% else %}
+                <button class="btn btn-danger btn-sm  undovote/{{answer.answer_id}} undovote" style="float: right; margin-right: 0.5%;" id="undovote/{{answer.answer_id}}" onclick="voteFunction('undovote/{{answer.answer_id}}');">Undo Vote</button>
+                <button class="btn btn-success btn-sm  vote/{{answer.answer_id}} vote" style="float: right; margin-right: 0.5%;" id="vote/{{answer.answer_id}}" onclick="voteFunction('vote/{{answer.answer_id}}');">Vote</button> {% else %}
                 <div class="dropdown" style="float: right;">
                     <a class="btn btn-secondary btn-sm dropdown-toggle" style="color: white;;" role="button" type="button" id="navbarDarkDropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
                       Actions
@@ -301,8 +301,18 @@
 
     // removing temporary vote/undovote buttons:
 
-    document.getElementsByClassName('vote')[0].style.display = 'none';
-    document.getElementsByClassName('undovote')[0].style.display = 'none';
+    vote_buttons = document.getElementsByClassName('vote');
+    undovote_buttons = document.getElementsByClassName('undovote');
+
+    for (var i = 0; i < vote_buttons.length; i++) {
+
+        vote_buttons[i].style.display = 'none';
+    }
+
+    for (var i = 0; i < undovote_buttons.length; i++) {
+
+        undovote_buttons[i].style.display = 'none';
+    }
 
     // Function dealing with vote/undo vote features:
 
@@ -344,7 +354,7 @@
                 // removing the clicked button:
                 document.getElementById(action_and_answerID).style.display = 'none';
 
-                document.getElementsByClassName('undovote')[0].style.display = 'block';
+                document.getElementsByClassName(`undovote/${answerID}`)[0].style.display = 'block';
 
                 // changing the number of votes in real-time:
 
@@ -358,7 +368,8 @@
                 // removing the clicked button:
                 document.getElementById(action_and_answerID).style.display = 'none';
 
-                document.getElementsByClassName('vote')[0].style.display = 'block';
+                document.getElementsByClassName(`vote/${answerID}`)[0].style.display = 'block';
+
 
                 // changing the number of votes in real-time:
 
