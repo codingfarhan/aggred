@@ -46,6 +46,10 @@ function popup_form(action) {
         document.getElementsByClassName("category-options")[0].style.display =
             "none";
         document.getElementById("title_row").style.display = "none";
+
+        // changing required attribute for title:
+
+        document.getElementById("exampleFormControlTextarea1").required = false;
     } else if (action.startsWith("Reply To Answer")) {
         console.log("replying to answer..");
         form_heading.innerText = "REPLY TO ANSWER";
@@ -57,6 +61,10 @@ function popup_form(action) {
         document.getElementsByClassName("category-options")[0].style.display =
             "none";
         document.getElementById("title_row").style.display = "none";
+
+        // changing required attribute for title:
+
+        document.getElementById("exampleFormControlTextarea1").required = false;
     }
 }
 

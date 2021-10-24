@@ -160,12 +160,12 @@
 
             <div class="form-group text-center row mb-5" id="title_row">
                 <label for="exampleFormControlTextarea1" id="form-title">Title *</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="title" id="name" placeholder="Your question..." maxlength="130" required></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="title" id="name" placeholder="Your question..." maxlength="130"></textarea>
             </div>
 
             <div class="form-group text-center row mb-5">
                 <label for="exampleFormControlTextarea1" id="explanation"></label>
-                <textarea class="form-control" id="exampleFormControlTextarea2" rows="4" name="details" id="explanation_value" cols="30" placeholder="Write about the problem in detail." maxlength="1000" required></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea2" rows="4" name="details" id="explanation_value" cols="30" placeholder="Write about the problem in detail." maxlength="1000"></textarea>
             </div>
 
             <div class="category-options container" style="height: 19vh;">
@@ -329,6 +329,11 @@
         function redirect_here(name) {
             window.location.pathname = name;
         };
+
+        // setting required attribute for the two input fields: title and explanation.
+
+        document.getElementById('exampleFormControlTextarea1').required = true;
+        document.getElementById('exampleFormControlTextarea2').required = true;
     </script>
 
 
