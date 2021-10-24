@@ -202,7 +202,7 @@ def signup(request):
 
     elif request.method == 'GET':
 
-        return render(request, 'signup.html')
+        return render(request, 'signup.html', {'image_url': request.user.user_image_url})
 
 
 
@@ -229,7 +229,7 @@ def important_details(request):
 
         else:
 
-            return render(request, 'important_details.html')
+            return render(request, 'important_details.html', {'image_url': request.user.user_image_url})
 
 
     
@@ -280,7 +280,7 @@ def settings_(request):
 
         logged_in = request.user.social_user or request.user.is_authenticated
 
-        return render(request, 'settings.html', {'social_user': f'{request.user.social_user}', 'user_image_url': request.user.user_image_url, 'logged_in': logged_in})
+        return render(request, 'settings.html', {'social_user': f'{request.user.social_user}', 'user_image_url': request.user.user_image_url, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -309,7 +309,7 @@ def delete_confirmation(request):
 
         important_details_form(request)
 
-        return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this account?', 'message': 'This action cannot be reversed.', 'redirect_path': 'settings'})
+        return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this account?', 'message': 'This action cannot be reversed.', 'redirect_path': 'settings', 'image_url': request.user.user_image_url})
 
 
 
@@ -353,7 +353,7 @@ def change_password(request):
 
             logged_in = request.user.is_authenticated or request.user.social_user
 
-            return render(request, 'change_password.html', {'logged_in': logged_in})
+            return render(request, 'change_password.html', {'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -398,7 +398,7 @@ def change_email(request):
 
         logged_in = request.user.is_authenticated or reqeust.user.social_user
 
-        return render(request, 'change_email.html', {'logged_in': logged_in})
+        return render(request, 'change_email.html', {'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -428,7 +428,7 @@ def change_title(request):
 
         logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'change_title.html', {'logged_in': logged_in})
+        return render(request, 'change_title.html', {'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -467,7 +467,7 @@ def change_name(request):
 
             logged_in = request.user.is_authenticated or request.user.social_user
 
-            return render(request, 'change_name.html', {'logged_in':logged_in})
+            return render(request, 'change_name.html', {'logged_in':logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -479,7 +479,7 @@ def edit_profile_image(request):
 
         important_details_form(request)
 
-        return render(request, 'edit_profile_image.html')
+        return render(request, 'edit_profile_image.html', {'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':

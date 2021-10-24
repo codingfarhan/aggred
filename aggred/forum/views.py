@@ -314,7 +314,7 @@ def forum(request):
 
             logged_in = False
 
-        return render(request, 'forum.html', {'logged_in': logged_in})
+        return render(request, 'forum.html', {'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -412,7 +412,7 @@ def category_posts(request, class_, subject, search_query):
         logged_in = request.user.is_authenticated or request.user.social_user
         print(logged_in)
 
-        return render(request, 'category_posts.html', {'context': context, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in})
+        return render(request, 'category_posts.html', {'context': context, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -573,7 +573,7 @@ def post_id(request, post_id):
             print(f'liked: {liked}, saved: {saved}')
 
 
-            return render(request, 'post.html', {'liked': liked, 'saved': saved, 'userEmail': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in})
+            return render(request, 'post.html', {'liked': liked, 'saved': saved, 'userEmail': request.user.email, 'email': email, 'already_answered': already_answered, 'answers_exist': answers_exist, 'answers_list': answers_list, 'replies_exist': replies_exist, 'replies_list': replies_list, 'full_name': full_name, 'image_url': image_url, 'likes': likes, 'title': title, 'content': content, 'post_date': post_date, 'answers': answers, 'post_id': post_id, 'user_title': user_title, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -672,7 +672,7 @@ def edit_post(request, post_id):
 
         logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'edit_post.html', {'post_content': post_content, 'post_title': post_title, 'logged_in': logged_in})
+        return render(request, 'edit_post.html', {'post_content': post_content, 'post_title': post_title, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -711,7 +711,7 @@ def edit_answer(request, answer_id):
         logged_in = request.user.is_authenticated or request.user.social_user
 
 
-        return render(request, 'edit_answer.html', {'answer_content': answer_content, 'answer_title': answer_title, 'logged_in': logged_in})
+        return render(request, 'edit_answer.html', {'answer_content': answer_content, 'answer_title': answer_title, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
     
     elif request.method == 'POST':
@@ -745,7 +745,7 @@ def edit_reply(request, reply_id):
 
         logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'edit_reply.html', {'reply_content': content, 'logged_in': logged_in})
+        return render(request, 'edit_reply.html', {'reply_content': content, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
 
@@ -796,7 +796,7 @@ def delete_post(request, post_id):
 
         if delete_ == True:         
         
-            return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this post?', 'message': 'This is an irreversable action.', 'redirect_path': 'forum'})
+            return render(request, 'delete_confirmation.html', {'heading': 'Are you sure you want to delete this post?', 'message': 'This is an irreversable action.', 'redirect_path': 'forum', 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -839,7 +839,7 @@ def delete_answer(request, answer_id):
 
         important_details_form(request)
 
-        return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this answer? This action cannot be reversed.', 'redirect_url': f'forum/post/{answer_.post_id}'})
+        return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this answer? This action cannot be reversed.', 'redirect_url': f'forum/post/{answer_.post_id}', 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -865,7 +865,7 @@ def delete_reply(request, reply_id):
 
         important_details_form(request)
 
-        return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this reply?', 'redirect_url': f'forum/post/{reply_.post_id}'})
+        return render(request, 'delete_confirmation.html', {'heading': 'Delete Confirmation', 'message': 'Are you sure you want to delete this reply?', 'redirect_url': f'forum/post/{reply_.post_id}', 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
@@ -916,7 +916,7 @@ def my_posts(request):
         no_of_posts = len(context)
         logged_in = request.user.is_authenticated or request.user.social_user
 
-        return render(request, 'my_posts.html', {'context': context, 'no_of_posts': no_of_posts, 'logged_in': logged_in})
+        return render(request, 'my_posts.html', {'context': context, 'no_of_posts': no_of_posts, 'logged_in': logged_in, 'image_url': request.user.user_image_url})
 
 
     elif request.method == 'POST':
