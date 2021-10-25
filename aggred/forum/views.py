@@ -412,7 +412,32 @@ def category_posts(request, class_, subject, search_query):
         logged_in = request.user.is_authenticated or request.user.social_user
         print(logged_in)
 
-        return render(request, 'category_posts.html', {'context': context, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in, 'image_url': request.user.user_image_url})
+
+        # creating two lists: one for all the liked posts and another for all the posts with no likes:
+
+        initial_icons = []
+
+        for item in context:
+
+            if item['post_id'] in request.user.liked_posts:
+
+                initial_icons.append(f"dislike,{item['post_id']}")
+
+            else:
+
+                initial_icons.append(f"like,{item['post_id']}")
+
+            if save_post.objects.filter(email=request.user.email, post_id=item['post_id']).exists():
+                
+                initial_icons.append(f"unsave,{item['post_id']}")
+
+            else:
+
+                initial_icons.append(f"save,{item['post_id']}")
+
+
+
+        return render(request, 'category_posts.html', {'context': context, 'initial_icons': initial_icons, 'search': search_query, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in, 'image_url': request.user.user_image_url, 'userEmail': request.user.email})
 
 
     elif request.method == 'POST':

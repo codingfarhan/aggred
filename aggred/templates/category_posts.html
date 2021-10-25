@@ -97,15 +97,29 @@
         </div>
     </div>
     <div class="card-header" id="likes-and-answers">
-        <a>{{post.likes}} Likes</a>&nbsp;&nbsp;&nbsp;
-        <a>{{post.answers}} Answers</a>
-        <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <a id="likes,{{post.post_id}}" class="likes">{{post.likes}} Likes</a>&nbsp;&nbsp;&nbsp;
+        <a>{{post.answers}} Answers</a> {% if logged_in %}
+
+        <!-- LIKE ICONS  -->
+        <!-- <a style="float: right;" id="save,{{post.post_id}}" class="save-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark" width="32" height="32" viewBox="0 0 24 24" stroke-width="0.5" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <path d="M9 4h6a2 2 0 0 1 2 2v14l-5 -3l-5 3v-14a2 2 0 0 1 2 -2" />
       </svg></a>
-        <a style="float: right;"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+
+        <a style="float: right;" id="unsave,{{post.post_id}}" class="unsave-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bookmark-off" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="#008b8b" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <line x1="3" y1="3" x2="21" y2="21" />
+        <path d="M17 17v3l-5 -3l-5 3v-13m1.178 -2.818c.252 -.113 .53 -.176 .822 -.176h6a2 2 0 0 1 2 2v7" />
+      </svg></a> -->
+
+        <!-- SAVED ICONS  -->
+        <!-- <a style="float: right;" id="like,{{post.post_id}}" class="like-icon"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
         <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
       </svg></a>
+
+        <a style="float: right;" id="dislike,{{post.post_id}}" class="dislike-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+      </svg></a> {% endif %} -->
 
 
         <!-- INCASE THE POST HAS ALREADY BEEN  SAVED -->
@@ -127,14 +141,7 @@
         <a style="text-align: center; color:white; font-size:x-large; display: flex-item;">See all Answers</a>
     </div>
 </div>
-{% endfor %}
-
-
-<script src="{% static 'js/post_form_script.js' %}"></script>
-
-<script src="{% static 'js/popup_submit.js' %}"></script>
-
-
+{% endfor %} {{ initial_icons|json_script:'initial_icons' }} {{ userEmail|json_script:'userEmail' }}
 <style>
     #contactForm {
         width: 110%;
@@ -356,6 +363,42 @@
     });
 </script>
 
+<script>
+    // setting initial state of like and dislike, save and unsave icons to none:
 
+    like_icons_ = document.getElementsByClassName('like-icon');
+    dislike_icons_ = document.getElementsByClassName('dislike-icon');
+
+    for (var i = 0; i < like_icons_.length; i++) {
+
+        like_icons_[i].style.display = 'none';
+    }
+
+    for (var j = 0; j < dislike_icons_; j++) {
+
+        dislike_icons_[j].style.display = 'none';
+    }
+
+
+    save_icons_ = document.getElementsByClassName('save-icon');
+    unsave_icons_ = document.getElementsByClassName('unsave-icon');
+
+    for (var i = 0; i < save_icons_.length; i++) {
+
+        save_icons_[i].style.display = 'none';
+    }
+
+    for (var j = 0; j < unsave_icons_.length; j++) {
+
+        unsave_icons_[j].style.display = 'none';
+    }
+</script>
+
+
+<script src="{% static 'js/post_form_script.js' %}"></script>
+
+<script src="{% static 'js/popup_submit.js' %}"></script>
+
+<!-- <script src="{% static 'js/ajax_script_category_post.js' %}"></script> -->
 
 {% endblock content %}
