@@ -33,10 +33,10 @@
             <div class="collapse navbar-collapse ml-auto" id="navbarNavDarkDropdown" style="justify-content: flex-end">
                 <ul class="navbar-nav">
 
-                    <li style="padding-top: 2vh;" onclick="redirect_here('leaderboards');">
-                        <a href="" id="leaderboards" style="color: white; font-size: 120%; padding-bottom: 5%">Leaderboards</a>
+                    <li style="padding-top: 2vh;" onclick="redirect_here('leaderboards/region=Worldwide');">
+                        <a id="leaderboards" style="color: white; font-size: 120%; padding-bottom: 5%" onclick="redirect_here('leaderboards/region=Worldwide');">Leaderboards</a>
 
-                        <a><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-crown" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffec00" fill="none" stroke-linecap="round" stroke-linejoin="round" id="leaderboard-icon">
+                        <a onclick="redirect_here('leaderboards/region=Worldwide');"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-crown" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffec00" fill="none" stroke-linecap="round" stroke-linejoin="round" id="leaderboard-icon">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
                           </svg></a>
@@ -62,12 +62,12 @@
     </nav>
 
 
-    <h1 style="z-index: 10000; color: white; top: 24%; margin-left: 15%; font-size: 450%; font-family: Georgia;">FORUM</h1>
+    <h1 style="z-index: 10000; color: white;font-size: 450%; font-family: Georgia; text-align: center; "> <br> FORUM</h1>
 
 
     <div class="search-container">
 
-        <form class="input-group" method="POST" style="padding-top: 36vh">
+        <form class="input-group" method="POST" style="margin-top: 10vh">
 
             {% csrf_token %}
 
@@ -215,12 +215,16 @@
 
 
     <style>
+        li {
+            cursor: pointer;
+        }
+        
         #form-btn {
             width: 10vw;
         }
         
         .search-container {
-            height: 60vh;
+            height: 10vh;
         }
         
         form {

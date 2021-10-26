@@ -1,8 +1,9 @@
 {% load static %} {% block content %} {% include "base.html" %}
 
+<h1 style="font-size:xx-large; color: black; text-align:center;">COMING SOON!</h1>
 
 <!-- PAGE CODE STARTS  -->
-
+<!-- 
 <div class="heading-container">
     <div class="heading">Leaderboards</div>
 </div>
@@ -342,13 +343,6 @@
 
 
 
-<script>
-    document.getElementsByClassName('search-container')[0].style.display = 'none';
-
-    function redirect_here(name) {
-        window.location.pathname = name;
-    }
-</script>
 
 {{ region|json_script:'region' }}
 
@@ -360,5 +354,14 @@
     });
 </script>
 
-<script src="https://mojoaxel.github.io/bootstrap-select-country/dist/js/bootstrap-select-country.min.js"></script>
+<script src="https://mojoaxel.github.io/bootstrap-select-country/dist/js/bootstrap-select-country.min.js"></script> -->
+
+
+<script>
+    document.getElementsByClassName('search-container')[0].style.display = 'none';
+
+    function redirect_here(name) {
+        window.location.pathname = name;
+    }
+</script>
 {% endblock content %}

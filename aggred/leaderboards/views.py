@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 from profiles.models import profile
 import json
 from django.http import Http404, HttpResponseRedirect
+import datetime
 
 
 
 
-
-# helper function:
+# helper functions:
 def important_details_form(request):
 
     if request.user.country == '' or request.user.category == '':
@@ -18,6 +18,12 @@ def important_details_form(request):
     else:
 
         pass
+
+
+
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
 
 
 
@@ -33,10 +39,10 @@ def leaderboards(request, region):
 
 
         if region == 'Worldwide':
-            result_set = json.dumps(list(profile.objects.all().order_by('crowns')))
+            result_set = json.dumps(list(profile.objects.all().order_by('crowns')), default=myconverter)
 
         else:
-            result_set = json.dumps(list(profile.objects.all().filter(country=region).order_by('crowns')))
+            result_set = json.dumps(list(profile.objects.all().filter(country=region).order_by('crowns')), default=myconverter)
 
         
         context = []
@@ -69,4 +75,4 @@ def leaderboards(request, region):
         
         logged_in = request.user.social_user or request.user.is_authenticated
 
-        return render(request, 'leaderboards.html', {'context': context, 'data_available': data_available, 'region': region, 'logged_in': logged_in})
+        return render(request, 'leaderboards.html', {'context': context, 'image_url': request.user.user_image_url, 'data_available': data_available, 'region': region, 'logged_in': logged_in})
