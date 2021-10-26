@@ -906,12 +906,135 @@ def delete_reply(request, reply_id):
 
 @login_required(login_url='signin')
 def saved_posts(request):
-
+    
     if request.method == 'GET':
 
         important_details_form(request)
 
-        pass
+        no_results = 'False'
+
+
+        if save_post.objects.filter(email=request.user.email).exists():
+
+            saved_posts = list(save_post.objects.filter(email=request.user.email).values())
+
+            saved_posts_data = []
+
+
+            if saved_posts != [] and len(saved_posts) != 0 and saved_posts[0] != None:
+
+                for item in saved_posts:
+
+                    post_data = post.objects.filter(post_id=item['post_id']).first()
+                    print(post_data.post_id)
+                    saved_posts_data.append(post_data)
+
+        else:
+            
+            saved_posts_data = []
+            no_results = 'True'
+
+        
+        print(len(saved_posts_data))
+
+
+        context = []
+
+        # qs = json.loads(result_set)
+        # print(qs)
+
+
+        if saved_posts_data != [] and len(saved_posts_data) != 0 and saved_posts_data[0] != None:
+
+            for item in saved_posts_data:
+                context.append({'post_id': item.post_id, 'email': item.email, 'user_image_url': item.user_image_url, 'full_name': item.full_name, 'user_title': item.user_title, 'post_title': item.post_title, 'post_content': item.post_content, 'likes': item.likes, 'post_date': item.post_date, 'answers': item.answers, 'redirect_url': f"forum/post/{item.post_id}"})
+
+
+
+        if saved_posts_data == [] and len(context) == 0:
+            no_results = 'True'
+
+        
+        logged_in = request.user.is_authenticated or request.user.social_user
+        print(logged_in)
+
+
+        # creating two lists: one for all the liked posts and another for all the posts with no likes:
+
+        initial_icons = []
+
+        for item in context:
+
+            if item['post_id'] in request.user.liked_posts:
+
+                initial_icons.append(f"dislike,{item['post_id']}")
+
+            else:
+
+                initial_icons.append(f"like,{item['post_id']}")
+
+            if save_post.objects.filter(email=request.user.email, post_id=item['post_id']).exists():
+                
+                initial_icons.append(f"unsave,{item['post_id']}")
+
+            else:
+
+                initial_icons.append(f"save,{item['post_id']}")
+
+
+
+        return render(request, 'saved_posts.html', {'context': context, 'initial_icons': initial_icons, 'no_results': no_results, 'number_of_results': len(context), 'logged_in': logged_in, 'image_url': request.user.user_image_url, 'userEmail': request.user.email})
+
+
+    elif request.method == 'POST':
+
+
+        # CHECKING IF POST FORM HAS BEEN FILLED:
+
+        title = request.POST.get('title', False)
+        explanation = request.POST.get('details', False)
+        post_form_submit = request.POST.get('post_question', False)
+
+        post_class = request.POST.get('post_class', False)
+        post_subject_or_course = request.POST.get('post_subject_or_course', False)
+
+
+        print(title, explanation, post_class, post_subject_or_course, post_form_submit)
+
+        filled_post_form = title != False and explanation  != False and post_form_submit != False
+
+        print(filled_post_form)
+
+        full_name = request.user.first_name + ' ' + request.user.last_name
+
+
+
+        if not filled_post_form:
+
+            return render(request, 'error_message.html', {'heading': 'An Unexpected Error Occured', 'message': 'Please try again later.'})
+
+        elif filled_post_form:
+
+            # if a question is posted:
+
+            if post_form_submit == "POST":
+
+                # saving post:
+
+                post_id = str(uuid.uuid4())
+
+                new_post = post(post_id=post_id, email=request.user.email, grade=post_class, subject=post_subject_or_course, user_image_url=request.user.user_image_url, full_name=full_name, post_title=title, post_content=explanation, user_title=request.user.title)
+                new_post.save()
+
+                return HttpResponseRedirect(f'/forum/post/{post_id}')
+
+        else:
+
+            return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Please try again in a while'})
+
+
+
+        
 
 
 
