@@ -1,5 +1,14 @@
 from . import views
 from django.urls import path
+from .sitemap import PostSitemap
+from django.contrib.sitemaps.views import sitemap
+
+
+
+sitemaps = {
+    'post': PostSitemap,
+}
+
 
 
 urlpatterns = [
@@ -22,5 +31,7 @@ urlpatterns = [
 
     path('forum/profile_info/saved_posts', views.saved_posts, name='saved_posts'),
     path('forum/profile/my_posts', views.my_posts, name='my_posts'),
-    path('message_screen', views.message_screen, name='message_screen')
+    path('message_screen', views.message_screen, name='message_screen'),
+
+    path('sitemap.xml', sitemap, {'sitemaps':sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
