@@ -24,3 +24,22 @@ class PostSitemap(Sitemap):
 
         # return reverse('forum:post', args=[item.post_id])
         return '/forum/post/%s' % (item.post_id)
+
+
+
+
+
+class StaticSitemap(Sitemap):
+
+    changefreq = 'daily'
+    priority = 0.5
+
+
+    def items(self):
+
+        return ['home']
+
+    
+    def location(self, item):
+
+        return reverse(item)
