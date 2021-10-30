@@ -846,6 +846,31 @@ def delete_post(request, post_id):
         for row in del_replies:
             row.delete()
 
+        
+        # delete all likes that anyone made on the post in their profile model:
+
+        people_liked = profile.objects.filter(liked_posts__contains=post_id).all()
+
+        for people in people_liked:
+
+
+            if ',' not in people.liked_posts and people.liked_posts != '':
+
+                people.liked_posts = people.liked_posts.replace(post_id, '')
+
+            elif ',' in people.liked_posts and people.liked_posts.split(',')[0] == post_id:
+
+                people.liked_posts = people.liked_posts.replace(f'{post_id},', '')
+
+            else:
+
+                people.liked_posts = people.liked_posts.replace(f',{post_id}', '')
+
+            
+            people.save()
+
+
+
         return render(request, 'message_screen.html', {'heading': 'Delete Successful', 'message': 'Your post was successfuly deleted.'})
 
 
