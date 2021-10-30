@@ -20,6 +20,7 @@ class PostSitemap(Sitemap):
         return obj.post_date
 
     
-    # def location(self,item):
+    def location(self, item):
 
-    #     return reverse('forum:post', args=[item.post_id])
+        # return reverse('forum:post', args=[item.post_id])
+        return '/forum/post/%s' % (item.post_id)
