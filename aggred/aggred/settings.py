@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 ]
 
 
-SITE_ID = int(os.environ.get('SITE_ID'))
+# SITE_ID = int(os.environ.get('SITE_ID'))
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
