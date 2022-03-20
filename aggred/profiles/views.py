@@ -202,7 +202,7 @@ def signup(request):
 
     elif request.method == 'GET':
 
-        return render(request, 'signup.html', {'image_url': request.user.user_image_url})
+        return render(request, 'signup.html')
 
 
 

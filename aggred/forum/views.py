@@ -237,15 +237,56 @@ def home(request):
 
     elif request.method == 'GET':
 
-        if request.user.is_active:
 
-            logged_in = True
+        return redirect('digimotif')
+
+        # if request.user.is_active:
+
+        #     logged_in = True
+
+        # else:
+
+        #     logged_in = False
+
+
+        # return render(request, 'home.html', {'logged_in':logged_in})
+
+
+
+
+# New business website:
+def digimotif(request):
+
+    if request.method == 'GET':
+
+        return render(request, 'webdev_business/index.html')
+
+    
+    elif request.method == 'POST':
+        
+        email = request.POST.get('email', False)
+
+        if email:
+
+            send_mail('A website visitor is contacting you',
+            f'This message was sent by mail id: {email}.' + '\n' + '\n' + 'Please reach out to this email to initiate sales.',
+            email,
+            [f'{settings.EMAIL_HOST_USER}'],
+            fail_silently = False)
+
+            return render(request, 'message_screen.html', {'heading': 'Message sent successfully', 'message': 'Shortly, someone from Digimotif will contact you through email.'})
+
 
         else:
+            
+            return render(request, 'error_message.html', {'heading': 'Unexpected Error', 'message': 'Message failed to send. Please try again in a while'})
 
-            logged_in = False
 
-        return render(request, 'home.html', {'logged_in':logged_in})
+
+
+
+
+
 
 
 

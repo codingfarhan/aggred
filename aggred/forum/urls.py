@@ -14,6 +14,7 @@ sitemaps = {
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('digimotif', views.digimotif, name='digimotif'),
     path('forum', views.forum, name='forum'),
 
     path('forum/result/class_or_degree=<class_>/subject_or_field=<subject>/search=<search_query>', views.category_posts, name='category_posts'),
