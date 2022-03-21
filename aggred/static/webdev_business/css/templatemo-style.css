@@ -445,6 +445,13 @@ figure.effect-honey:hover h2 i {
     position: relative;
     padding-bottom: 50px;
     padding-top: 160px;
+    /* Extra code for safari browser compatibility of background image */
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
 }
 
 .tm-underline {
